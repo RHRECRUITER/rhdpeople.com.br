@@ -12,5 +12,7 @@
     </head>
     <body class="min-h-screen bg-white text-slate-900">
         @yield('content')
+
+        @include('landing.partials.footer')
     </body>
 </html>
