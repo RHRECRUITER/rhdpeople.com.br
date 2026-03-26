@@ -1,0 +1,123 @@
+/* Benefícios — Métricas + Informações */
+
+/* Header da seção de métricas */
+
+.metricas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 4rem;
+    margin-bottom: 3rem;
+}
+
+.metricas-header__left {
+    flex: 1;
+    max-width: 480px;
+}
+
+.metricas-header__right {
+    flex: 1;
+    max-width: 440px;
+    padding-top: 1rem;
+}
+
+/* Grid de informações (2 colunas) */
+
+.beneficios-info__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+}
+
+.beneficios-info__content .section__title {
+    margin-bottom: 3rem;
+}
+
+/* Lista de vantagens */
+
+.beneficios-info__list {
+    display: flex;
+    flex-direction: column;
+}
+
+.beneficios-info__item {
+    padding: 1.5rem 0;
+    border-top: 1px solid #e2e2ea;
+}
+
+.beneficios-info__item:last-child {
+    border-bottom: 1px solid #e2e2ea;
+}
+
+.beneficios-info__item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.beneficios-info__title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a2e;
+    line-height: 1.4;
+}
+
+.beneficios-info__arrow {
+    font-size: 1.125rem;
+    color: #8a8aa3;
+    transition: color 0.2s ease, transform 0.2s ease;
+    flex-shrink: 0;
+    margin-left: 1rem;
+}
+
+.beneficios-info__item:hover .beneficios-info__arrow {
+    color: #2563eb;
+    transform: translateX(4px);
+}
+
+.beneficios-info__description {
+    font-size: 0.875rem;
+    color: #555770;
+    line-height: 1.6;
+    max-width: 400px;
+}
+
+/* Imagem */
+
+.beneficios-info__image {
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #eeeef4;
+}
+
+.beneficios-info__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+    .metricas-header {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .metricas-header__left,
+    .metricas-header__right {
+        max-width: 100%;
+    }
+
+    .beneficios-info__grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    .beneficios-info__image {
+        order: -1;
+    }
+}
