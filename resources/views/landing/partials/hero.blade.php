@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="hero-image-box">
-            <img src="{{ asset('assets/landing/img/hero/ilustracao-principal.png') }}" alt="Dashboard Recruiter">
+            <img src="https://via.placeholder.com/600x400/1a1a1a/D4AF37?text=Recruiter+Labs+Premium" alt="Dashboard Recruiter">
         </div>
     </div>
 </section>
