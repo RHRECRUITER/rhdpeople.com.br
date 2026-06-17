@@ -1,0 +1,514 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+/* ---------- Layout geral da seção (centralizado) ---------- */
+.formulario {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 48px;
+    width: 100%;
+    padding: 56px 24px;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+}
+
+.formulario *,
+.formulario *::before,
+.formulario *::after {
+    box-sizing: border-box;
+}
+
+/* ============================================================
+   COLUNA ESQUERDA — informações
+   ============================================================ */
+.formulario__info {
+    position: relative;
+    flex: 0 0 540px;
+    max-width: 540px;
+    align-self: stretch;
+    border-radius: 24px;
+    background:
+        linear-gradient(90deg, rgba(250, 250, 250, 0.49), rgba(250, 250, 250, 0.49)),
+        #f3fffc;
+    overflow: hidden;
+}
+
+/* halo verde difuso no fundo da coluna */
+.formulario__info::before {
+    content: "";
+    position: absolute;
+    top: -100px;
+    left: -110px;
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, rgba(5, 150, 105, 0.18) 0%, rgba(5, 150, 105, 0) 70%);
+    pointer-events: none;
+}
+
+.formulario__info-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 56px 44px;
+}
+
+/* Badge "Demonstração Gratuita" */
+.formulario__badge {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border: 1px solid #a7f3d0;
+    border-radius: 20px;
+    background-color: #fafafa;
+    box-shadow: 0 4px 8.2px rgba(0, 0, 0, 0.06);
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 20px;
+    letter-spacing: 1.2px;
+    color: #059669;
+}
+
+/* Título + descrição */
+.formulario__heading {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 440px;
+}
+
+.formulario__titulo {
+    margin: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 56px;
+    letter-spacing: -0.6px;
+    color: #292524;
+}
+
+.formulario__titulo-destaque {
+    color: #00644e;
+}
+
+.formulario__descricao {
+    margin: 0;
+    max-width: 400px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 26px;
+    letter-spacing: -0.1px;
+    color: #262626;
+}
+
+/* Lista de checkpoints */
+.formulario__lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.formulario__lista-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #525252;
+}
+
+.formulario__lista-icone {
+    flex: 0 0 20px;
+    width: 20px;
+    height: 20px;
+    color: #059669;
+}
+
+/* Linha separadora */
+.formulario__divisor {
+    width: 100%;
+    height: 0;
+    margin: 4px 0;
+    border: none;
+    border-top: 1px solid #e5e5e5;
+}
+
+.formulario__divisor--curto {
+    width: 240px;
+    max-width: 100%;
+}
+
+/* Selos (LGPD / Dados seguros / Sem contrato) */
+.formulario__selos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.formulario__selo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 12px;
+    border: 1px solid #064e3b;
+    border-radius: 10px;
+    background-color: rgba(250, 250, 250, 0.28);
+    backdrop-filter: blur(4px);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 18px;
+    letter-spacing: -0.16px;
+    color: #064e3b;
+}
+
+.formulario__selo svg {
+    width: 15px;
+    height: 15px;
+}
+
+/* ============================================================
+   COLUNA DIREITA — cartão do formulário
+   ============================================================ */
+.formulario__card {
+    flex: 0 0 480px;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.formulario__card-titulo {
+    margin: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 38px;
+    letter-spacing: -0.3px;
+    color: #262626;
+}
+
+.formulario__corpo {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.formulario__grupo {
+    border: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.formulario__grupo-titulo {
+    padding: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 26px;
+    letter-spacing: -0.15px;
+    color: #292524;
+}
+
+/* Grid dos campos de texto */
+.formulario__campos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.formulario__campo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.formulario__campo--full {
+    grid-column: 1 / -1;
+}
+
+.formulario__campo label,
+.formulario__campo-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1.2;
+    color: #525252;
+}
+
+.formulario__campo input {
+    height: 48px;
+    width: 100%;
+    padding: 0 16px;
+    border: 2px solid #e5e5e5;
+    border-radius: 8px;
+    background-color: #fafafa;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 22px;
+    color: #262626;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.formulario__campo input::placeholder {
+    color: #a3a3a3;
+}
+
+.formulario__campo input:hover {
+    border-color: #a7f3d0;
+}
+
+.formulario__campo input:focus {
+    outline: none;
+    border-color: #059669;
+    background-color: #ffffff;
+}
+
+/* ---------- Chips: número de colaboradores ---------- */
+.formulario__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.formulario__chip {
+    position: relative;
+    cursor: pointer;
+}
+
+.formulario__chip input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.formulario__chip span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    height: 48px;
+    padding: 0 16px;
+    border: 2px solid #e5e5e5;
+    border-radius: 10px;
+    background-color: #fafafa;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 22px;
+    color: #a3a3a3;
+    transition: all 0.15s ease;
+}
+
+.formulario__chip:hover span {
+    border-color: #a7f3d0;
+}
+
+.formulario__chip input:checked + span {
+    border-color: #059669;
+    background-color: #f3fffc;
+    color: #059669;
+}
+
+.formulario__chip input:focus-visible + span {
+    outline: 2px solid #059669;
+    outline-offset: 2px;
+}
+
+/* ---------- Opções: desafios ---------- */
+.formulario__opcoes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 20px;
+}
+
+.formulario__opcao {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    height: 52px;
+    padding: 14px 18px;
+    border: 2px solid #e5e5e5;
+    border-radius: 10px;
+    background-color: #fafafa;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.formulario__opcao input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.formulario__opcao-texto {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 20px;
+    color: #a3a3a3;
+    transition: color 0.15s ease;
+}
+
+/* marcador circular à direita */
+.formulario__opcao-marca {
+    flex: 0 0 20px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid #a3a3a3;
+    border-radius: 50%;
+    color: transparent;
+    transition: all 0.15s ease;
+}
+
+.formulario__opcao-marca svg {
+    width: 12px;
+    height: 12px;
+}
+
+.formulario__opcao:hover {
+    border-color: #a7f3d0;
+}
+
+.formulario__opcao input:checked ~ .formulario__opcao-texto {
+    color: #059669;
+}
+
+.formulario__opcao input:checked ~ .formulario__opcao-marca {
+    border-color: #059669;
+    background-color: #059669;
+    color: #ffffff;
+}
+
+.formulario__opcao:has(input:checked) {
+    border-color: #059669;
+    background-color: #f3fffc;
+}
+
+.formulario__opcao input:focus-visible ~ .formulario__opcao-marca {
+    outline: 2px solid #059669;
+    outline-offset: 2px;
+}
+
+/* ---------- Ações ---------- */
+.formulario__acoes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.formulario__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    height: 56px;
+    border: none;
+    border-radius: 12px;
+    background-color: #00644e;
+    box-shadow: 0 5px 3.95px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: -0.15px;
+    color: #fafafa;
+    transition: background-color 0.15s ease, transform 0.05s ease;
+}
+
+.formulario__btn svg {
+    width: 22px;
+    height: 22px;
+}
+
+.formulario__btn:hover {
+    background-color: #00553f;
+}
+
+.formulario__btn:active {
+    transform: translateY(1px);
+}
+
+.formulario__termos {
+    margin: 0;
+    text-align: center;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 18px;
+    letter-spacing: -0.16px;
+    color: #a3a3a3;
+}
+
+.formulario__termos a {
+    color: #737373;
+    text-decoration: underline;
+}
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+@media (max-width: 1080px) {
+    .formulario {
+        flex-direction: column;
+        gap: 32px;
+        padding: 40px 20px;
+    }
+
+    .formulario__info,
+    .formulario__card {
+        flex-basis: auto;
+        max-width: 540px;
+        width: 100%;
+    }
+
+    .formulario__info {
+        align-self: auto;
+    }
+}
+
+@media (max-width: 560px) {
+    .formulario__info-content {
+        padding: 40px 24px;
+    }
+
+    .formulario__titulo {
+        font-size: 38px;
+        line-height: 46px;
+    }
+
+    .formulario__card-titulo {
+        font-size: 26px;
+        line-height: 34px;
+    }
+
+    .formulario__campos,
+    .formulario__opcoes {
+        grid-template-columns: 1fr;
+    }
+}
