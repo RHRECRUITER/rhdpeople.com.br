@@ -1,0 +1,308 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500&family=Manrope:wght@400;500&family=Plus+Jakarta+Sans:wght@700&display=swap');
+
+/* ---------- Container externo ---------- */
+.rodape {
+    padding: 32px 64px;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+}
+
+.rodape *,
+.rodape *::before,
+.rodape *::after {
+    box-sizing: border-box;
+}
+
+/* Moldura translúcida */
+.rodape__wrap {
+    padding: 8px;
+    border: 1px solid #ece8fd;
+    border-radius: 32px;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(2px);
+}
+
+/* Cartão com brilho esmeralda */
+.rodape__content {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #ece8fd;
+    border-radius: 40px;
+    box-shadow:
+        0 8px 2px rgba(110, 231, 183, 0.2),
+        0 18px 6px rgba(110, 231, 183, 0.2);
+}
+
+/* ============================================================
+   Conteúdo principal
+   ============================================================ */
+.rodape__leading {
+    position: relative;
+    display: flex;
+    gap: 110px;
+    padding: 48px 48px 30px;
+    background:
+        radial-gradient(150px 150px at 15% 14%, rgba(110, 231, 183, 0.28), rgba(110, 231, 183, 0) 55%),
+        radial-gradient(150px 150px at 15% 92%, rgba(110, 231, 183, 0.2), rgba(110, 231, 183, 0) 55%),
+        radial-gradient(150px 150px at 85% 92%, rgba(110, 231, 183, 0.18), rgba(110, 231, 183, 0) 55%),
+        #ffffff;
+}
+
+/* ---------- Coluna da marca ---------- */
+.rodape__brand {
+    flex: 0 0 403px;
+    max-width: 403px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.rodape__logo {
+    width: 204px;
+    height: auto;
+}
+
+.rodape__slogan {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 38px;
+    letter-spacing: -0.2px;
+}
+
+.rodape__slogan-1 {
+    color: #404040;
+}
+
+.rodape__slogan-2 {
+    color: #059669;
+}
+
+.rodape__desc {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.16px;
+    color: #464c69;
+}
+
+/* ---------- Contatos ---------- */
+.rodape__contatos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.rodape__contato {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 2px 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.16px;
+    color: #464c69;
+}
+
+.rodape__contato-icone {
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+    color: #059669;
+}
+
+.rodape__contato a,
+.rodape__contato span {
+    color: inherit;
+    text-decoration: none;
+}
+
+.rodape__contato a:hover {
+    color: #059669;
+}
+
+/* ---------- Botão ---------- */
+.rodape__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    min-width: 249px;
+    height: 52px;
+    margin-top: 8px;
+    padding: 16px 24px;
+    border-radius: 10px;
+    background-color: #00644e;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.16px;
+    color: #fafafa;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+}
+
+.rodape__btn:hover {
+    background-color: #00553f;
+}
+
+/* ---------- Colunas de links ---------- */
+.rodape__links {
+    flex: 1 0 0;
+    display: flex;
+    justify-content: center;
+    gap: 56px;
+}
+
+.rodape__col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.rodape__col-titulo {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #171717;
+}
+
+.rodape__col-lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.rodape__link {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #242734;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.rodape__link:hover {
+    color: #059669;
+}
+
+/* ============================================================
+   Barra inferior
+   ============================================================ */
+.rodape__trailing {
+    position: relative;
+    padding: 24px 40px;
+    border-top: 1px solid #6ee7b7;
+    background-color: rgba(110, 231, 183, 0.24);
+}
+
+.rodape__trailing-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 16px;
+}
+
+.rodape__copy {
+    margin: 0;
+    font-family: 'Instrument Sans', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.28px;
+    color: #464c69;
+}
+
+.rodape__social {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.rodape__social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background-color: #ebfcf5;
+    color: #059669;
+    transition: background-color 0.15s ease;
+}
+
+.rodape__social-link svg {
+    width: 20px;
+    height: 20px;
+}
+
+.rodape__social-link:hover {
+    background-color: #d1f7e8;
+}
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+@media (max-width: 980px) {
+    .rodape {
+        padding: 24px;
+    }
+
+    .rodape__leading {
+        flex-direction: column;
+        gap: 48px;
+        padding: 40px 32px 32px;
+    }
+
+    .rodape__brand {
+        flex-basis: auto;
+        max-width: 460px;
+    }
+
+    .rodape__links {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 40px;
+    }
+}
+
+@media (max-width: 560px) {
+    .rodape {
+        padding: 16px;
+    }
+
+    .rodape__trailing-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .rodape__slogan {
+        font-size: 26px;
+        line-height: 32px;
+    }
+
+    .rodape__btn {
+        width: 100%;
+    }
+}
