@@ -58,7 +58,9 @@
     <div class="formulario__card">
         <h3 class="formulario__card-titulo">Agende sua demonstração</h3>
 
-        <form class="formulario__corpo" action="#" method="POST" novalidate>
+        <form class="formulario__corpo" action="{{ route('landing.leads') }}" method="POST" novalidate>
+            @csrf
+
             {{-- Bloco: Dados de contato --}}
             <fieldset class="formulario__grupo">
                 <legend class="formulario__grupo-titulo">Dados de contato</legend>
@@ -66,24 +68,24 @@
                 <div class="formulario__campos">
                     <div class="formulario__campo">
                         <label for="df-nome">Nome completo</label>
-                        <input id="df-nome" type="text" name="nome" placeholder="Seu nome" autocomplete="name">
+                        <input id="df-nome" type="text" name="name" placeholder="Seu nome" autocomplete="name">
                     </div>
                     <div class="formulario__campo">
                         <label for="df-empresa">Empresa</label>
-                        <input id="df-empresa" type="text" name="empresa" placeholder="Nome da empresa" autocomplete="organization">
+                        <input id="df-empresa" type="text" name="company_name" placeholder="Nome da empresa" autocomplete="organization">
                     </div>
                     <div class="formulario__campo">
                         <label for="df-email">E-mail corporativo</label>
-                        <input id="df-email" type="email" name="email" placeholder="Empresa@gmail.com" autocomplete="email">
+                        <input id="df-email" type="email" name="corporate_email" placeholder="Empresa@gmail.com" autocomplete="email">
                     </div>
                     <div class="formulario__campo">
                         <label for="df-whatsapp">WhatsApp</label>
-                        <input id="df-whatsapp" type="tel" name="whatsapp" placeholder="(00) 00000-0000" autocomplete="tel">
+                        <input id="df-whatsapp" type="tel" name="phone" placeholder="(00) 00000-0000" autocomplete="tel">
                     </div>
                 </div>
 
                 <div class="formulario__campo formulario__campo--full">
-                    <span class="formulario__campo-label">Número do colaboradores</span>
+                    <span class="formulario__campo-label">Número de colaboradores</span>
                     <div class="formulario__chips">
                         @foreach (['1-20', '21-50', '51-100', '101-300', '300+'] as $i => $faixa)
                             <label class="formulario__chip">
@@ -102,9 +104,15 @@
                 <legend class="formulario__grupo-titulo">Qual seu maior desafio hoje?</legend>
 
                 <div class="formulario__opcoes">
-                    @foreach (['Gestão de férias', 'Controle de ponto', 'Folha de pagamento', 'Documentos'] as $desafio)
+                    @foreach ([
+                        'time_tracking' => 'Controle de ponto',
+                        'vacation' => 'Gestão de férias',
+                        'payroll' => 'Folha de pagamento',
+                        'documents' => 'Documentos',
+                        'reports' => 'Relatórios',
+                    ] as $modulo => $desafio)
                         <label class="formulario__opcao">
-                            <input type="checkbox" name="desafios[]" value="{{ $desafio }}">
+                            <input type="checkbox" name="objective[{{ $modulo }}]" value="1">
                             <span class="formulario__opcao-texto">{{ $desafio }}</span>
                             <span class="formulario__opcao-marca" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
