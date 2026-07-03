@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500&family=Manrope:wght@400;500&family=Plus+Jakarta+Sans:wght@700&display=swap');
-
 /* ---------- Container externo ---------- */
 .rodape {
     padding: 32px 64px;
@@ -51,8 +49,9 @@
 
 /* ---------- Coluna da marca ---------- */
 .rodape__brand {
-    flex: 0 0 403px;
+    flex: 1 1 403px;
     max-width: 403px;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -263,6 +262,7 @@
 /* ============================================================
    RESPONSIVO
    ============================================================ */
+/* Tablet/telas intermediárias: brand + colunas de links não cabem mais lado a lado, empilha em coluna */
 @media (max-width: 980px) {
     .rodape {
         padding: 24px;
@@ -286,6 +286,7 @@
     }
 }
 
+/* Mobile: barra inferior e botão passam a ocupar a largura total da tela */
 @media (max-width: 560px) {
     .rodape {
         padding: 16px;

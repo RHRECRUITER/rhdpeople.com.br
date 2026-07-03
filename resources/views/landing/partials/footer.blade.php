@@ -1,4 +1,6 @@
-<link rel="stylesheet" href="{{ asset('assets/landing/css/layout/footer.css') }}">
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/landing/css/layout/footer.css') }}">
+@endpush
 
 <footer class="rodape">
     <div class="rodape__wrap">
@@ -42,7 +44,7 @@
                         </li>
                     </ul>
 
-                    <a href="#" class="rodape__btn">Falar com especialista</a>
+                    <a href="https://wa.me/5583996219812" target="_blank" rel="noopener noreferrer" class="rodape__btn">Falar com especialista</a>
                 </div>
 
                 {{-- Colunas de links --}}
@@ -93,14 +95,14 @@
                     <p class="rodape__copy">© RHDPeople | todos os direitos reservados</p>
 
                     <div class="rodape__social">
-                        <a href="#" class="rodape__social-link" aria-label="LinkedIn">
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="rodape__social-link" aria-label="LinkedIn">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                                 <rect x="2" y="9" width="4" height="12" />
                                 <circle cx="4" cy="4" r="2" />
                             </svg>
                         </a>
-                        <a href="#" class="rodape__social-link" aria-label="Instagram">
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="rodape__social-link" aria-label="Instagram">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
