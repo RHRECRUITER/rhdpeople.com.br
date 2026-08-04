@@ -8,8 +8,12 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::view('/', 'welcome')->name('home');
+Route::view('/', 'landing.index')->name('home');
 
-Route::get('/landingpage', function () {
-    return view('landing.index');
-});
+// Mantida para não quebrar links externos que já apontam para /landingpage.
+Route::redirect('/landingpage', '/', 301);
+
+// Ambiente de testes de captcha (Postman). Fora de produção apenas.
+if (! app()->isProduction()) {
+    Route::view('/dev/captcha', 'welcome')->name('dev.captcha');
+}

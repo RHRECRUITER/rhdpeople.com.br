@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Domain\Landing\LeadsStore;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 

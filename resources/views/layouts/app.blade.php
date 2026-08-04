@@ -7,7 +7,8 @@
         <title>@yield('title', config('app.name'))</title>
 
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-            @vite(['resources/css/app.css', 'resources/js/app.js'])
+            @viteReactRefresh
+            @vite(['resources/css/app.css', 'resources/js/app.tsx'])
         @endif
     </head>
     <body class="min-h-screen bg-white text-slate-900">

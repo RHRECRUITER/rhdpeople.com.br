@@ -44,7 +44,7 @@
                 Editar:
                 <code class="rounded bg-slate-100 px-1 py-0.5">resources/views/welcome.blade.php</code>
                 e
-                <code class="rounded bg-slate-100 px-1 py-0.5">resources/js/app.js</code>
+                <code class="rounded bg-slate-100 px-1 py-0.5">resources/js/app.tsx</code>
             </p>
         </div>
     </main>
