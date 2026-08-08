@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { LandingLayout } from '../layouts/LandingLayout';
 import { Home } from '../modules/landing/pages/Home';
 

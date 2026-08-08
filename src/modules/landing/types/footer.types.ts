@@ -1,2 +1,1 @@
-export interface Footer{
-}
+export type Footer = {};

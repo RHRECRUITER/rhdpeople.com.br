@@ -1,2 +1,1 @@
-export interface Pricing{
-}
+export type Pricing = {};
