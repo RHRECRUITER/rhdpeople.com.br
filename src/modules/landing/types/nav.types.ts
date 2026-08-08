@@ -1,2 +1,1 @@
-export interface Nav{
-}
+export type Nav = {};

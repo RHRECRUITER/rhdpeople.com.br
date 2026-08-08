@@ -1,9 +1,5 @@
-import React from 'react'
-import Faq from '../types/faq.types';
+// import type { Faq } from '../types/faq.types';
 
 export function FaqAccordion() {
-    return (
-        <div>
-        </div>
-    );
+  return <div></div>;
 }

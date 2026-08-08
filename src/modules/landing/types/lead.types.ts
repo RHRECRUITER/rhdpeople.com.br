@@ -1,4 +1,4 @@
-import {z} from 'zod';
+import { z } from 'zod';
 
 //Schema de validação do formulário (com mensagens de erro)
 export const leadSchema = z.object({
@@ -7,5 +7,4 @@ export const leadSchema = z.object({
 
 export type LeadFormData = z.infer<typeof leadSchema>;
 
-export interface Lead{
-}
+export type Lead = {};

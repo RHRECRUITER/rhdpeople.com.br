@@ -1,2 +1,1 @@
-export interface Hero{
-}
+export type Hero = {};

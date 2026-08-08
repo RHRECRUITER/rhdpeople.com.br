@@ -1,2 +1,1 @@
-export interface Features{
-}
+export type Features = {};

@@ -1,2 +1,1 @@
-export interface Showcase{
-}
+export type Showcase = {};
