@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import { LandingFooter } from '../modules/landing/components/LandingFooter';
 import { Navbar } from '../modules/landing/components/Navbar';
 
