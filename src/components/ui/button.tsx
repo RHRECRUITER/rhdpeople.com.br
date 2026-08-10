@@ -16,6 +16,8 @@ const buttonVariants = cva(
           'bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground',
         ghost:
           'hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50',
+        glass:
+          'border-white/10 bg-black/10 text-white/75 backdrop-blur-md hover:bg-black/20 hover:text-white',
         destructive:
           'bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40',
         link: 'text-primary underline-offset-4 hover:underline',
@@ -26,12 +28,15 @@ const buttonVariants = cva(
         xs: "h-6 gap-1 rounded-[min(var(--radius-md),8px)] px-2 text-xs in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
         sm: 'h-8 gap-1 rounded-[min(var(--radius-md),10px)] px-2.5 in-data-[slot=button-group]:rounded-md has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5',
         lg: 'h-10 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2',
+        // xl / icon-xl: metrica dos CTAs do Figma (52px de altura, raio de 10px)
+        xl: 'h-13 gap-1.5 rounded-[10px] px-6 tracking-[-0.16px]',
         icon: 'size-9',
         'icon-xs':
           "size-6 rounded-[min(var(--radius-md),8px)] in-data-[slot=button-group]:rounded-md [&_svg:not([class*='size-'])]:size-3",
         'icon-sm':
           'size-8 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-md',
         'icon-lg': 'size-10',
+        'icon-xl': 'size-13 rounded-[10px]',
       },
     },
     defaultVariants: {
