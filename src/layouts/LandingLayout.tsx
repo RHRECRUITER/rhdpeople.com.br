@@ -3,9 +3,10 @@ import { LandingFooter } from '../modules/landing/components/LandingFooter';
 import { Navbar } from '../modules/landing/components/Navbar';
 
 export function LandingLayout() {
+  // As cores vem de `body` (bg-background/text-foreground), definidas em index.css
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
-      {/* Navbar fixa no topo */}
+    <div className="relative flex min-h-screen flex-col transition-colors">
+      {/* Navbar sobreposta ao topo da pagina (fica sobre a imagem do hero) */}
       <Navbar />
 
       {/* Conteúdo dinâmico da página injetado */}
