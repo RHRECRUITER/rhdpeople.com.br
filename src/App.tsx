@@ -1,6 +1,6 @@
-import { AppRoutes } from './routes/AppRoutes';
-import { useEffect } from 'react';
 import axios from 'axios';
+import { useEffect } from 'react';
+import { AppRoutes } from './routes/AppRoutes';
 
 export function App() {
   useEffect(() => {
@@ -8,7 +8,7 @@ export function App() {
       try {
         // apontando URL base e força o tráfego de credenciais
         await axios.get(`${import.meta.env.VITE_SANCTUM_URL}/sanctum/csrf-cookie`, {
-          withCredentials: true
+          withCredentials: true,
         });
         //Persistir somente para debug
         console.log('✅ Sessão de visitante e CSRF inicializados.');

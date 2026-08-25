@@ -16,14 +16,14 @@ export interface LeadPayload {
 }
 
 export const submitLeadCapture = async (
-  payload: LeadPayload, 
-  captchaToken: string = 'token-de-teste'
+  payload: LeadPayload,
+  captchaToken: string = 'token-de-teste',
 ) => {
   const response = await api.post('/v1/landing/leads', payload, {
     headers: {
-      'X-Validation-Token': captchaToken
-    }
+      'X-Validation-Token': captchaToken,
+    },
   });
-  
+
   return response.data;
 };
