@@ -8,7 +8,6 @@ import {
   CARD_OUTER,
   COLUMN_LINK,
   COLUMN_WIDTHS,
-  GLOW_LAYER,
   SOCIAL_BUTTON,
 } from '../lib/footer.styles';
 import { CONTAINER, MUTED_TEXT, SECTION_SURFACE } from '../lib/styles';
@@ -73,8 +72,6 @@ export function LandingFooter({ content = DEFAULT_FOOTER }: LandingFooterProps) 
         <div className={CARD_OUTER}>
           <div className={CARD_INNER}>
             <div className="relative flex flex-col gap-14 bg-white px-6 pt-12 pb-7.5 lg:flex-row lg:gap-27.5 lg:px-12 dark:bg-neutral-900">
-              <div aria-hidden className={GLOW_LAYER} />
-
               <div className="relative flex w-full flex-col items-start gap-4 lg:w-100.75 lg:shrink-0">
                 <LogoLockup />
 

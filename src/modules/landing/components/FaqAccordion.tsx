@@ -14,7 +14,6 @@ import {
   CATEGORY_LIST,
   CATEGORY_STYLES,
   EYEBROW_BADGE,
-  GLOW_LAYER,
   QUESTION_CARD,
 } from '../lib/faq.styles';
 import { CONTAINER, SECTION_SURFACE } from '../lib/styles';
@@ -71,8 +70,6 @@ export function FaqAccordion({ content = DEFAULT_FAQ }: FaqAccordionProps) {
 
   return (
     <section className={cn(SECTION_SURFACE, 'relative')} id="faq">
-      <div aria-hidden className={GLOW_LAYER} />
-
       <div
         className={cn(
           CONTAINER,
