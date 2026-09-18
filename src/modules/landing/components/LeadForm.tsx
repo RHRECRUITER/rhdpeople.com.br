@@ -1,8 +1,7 @@
-import { useEffect, useState, type FormEvent } from 'react';
-import { submitLeadCapture, type LeadPayload } from '../api/lead.api';
+import { type FormEvent, useEffect, useState } from 'react';
+import { type LeadPayload, submitLeadCapture } from '../api/lead.api';
 
 export function LeadForm() {
-
   const [formStartedAt, setFormStartedAt] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -57,7 +56,7 @@ export function LeadForm() {
     try {
       // Passar o token do captcha obtido no componente visual de captcha
       await submitLeadCapture(payload, 'captcha-token-aqui');
-      
+
       setIsSuccess(true);
       setFormData({
         name: '',
