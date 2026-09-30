@@ -372,3 +372,12 @@
     @apply font-sans;
     }
 }
+
+/* Carrosseis que rolam na horizontal, sem a barra atravessada no conteudo. */
+@utility scrollbar-hidden {
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
