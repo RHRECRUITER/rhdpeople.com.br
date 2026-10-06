@@ -2,7 +2,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { DEFAULT_FEATURES } from '../data/features.data';
+import { DEFAULT_FEATURES } from '../content/features.content';
 import { CONTAINER } from '../lib/styles';
 import type { Advantage, Features } from '../types/featuresGrid.type';
 
