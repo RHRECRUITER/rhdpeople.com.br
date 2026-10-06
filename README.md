@@ -174,6 +174,8 @@ rhdpeople.com.br/
         └── landing/        # tudo da landing page mora aqui
             ├── api/        # funções que chamam o backend
             ├── components/ # seções da landing (Hero, Pricing, FAQ...)
+            ├── content/    # textos e dados fixos das seções (faq, footer, features...)
+            ├── lib/        # estilos e ícones usados pelas seções do módulo
             ├── pages/      # páginas que juntam as seções
             └── types/      # tipos TypeScript daquele módulo
 ```
@@ -188,7 +190,7 @@ A regra mental é simples:
 
 Hoje só existe o módulo `landing`. Se amanhã surgir uma área de login ou um painel,
 criamos `src/modules/auth/` e `src/modules/dashboard/` com a mesma estrutura interna
-(`api/`, `components/`, `pages/`, `types/`).
+(`api/`, `components/`, `content/`, `lib/`, `pages/`, `types/`).
 
 ### Como a página é montada (o caminho do código)
 
@@ -237,6 +239,7 @@ Isso está configurado em [vite.config.ts](vite.config.ts) e em
 | Um componente **usado no site inteiro** (ex.: `Loading`, `Modal`) | `src/components/` |
 | Um componente **base de UI** (botão, input, card) | `src/components/ui/` — via shadcn, veja a seção 8 |
 | Uma **página nova** (nova URL) | `src/modules/landing/pages/` + registrar em `src/routes/AppRoutes.tsx` |
+| Os **textos/dados fixos** que a seção exibe | `src/modules/landing/content/` |
 | Os **tipos** daquele componente | `src/modules/landing/types/` |
 | A **chamada de API** que ele usa | `src/modules/landing/api/` |
 
@@ -319,6 +322,9 @@ Salvou? A seção já aparece no navegador.
   Os componentes existentes seguem esse padrão.
 - Arquivos de tipos usam `camelCase` + sufixo: `testimonial.types.ts`.
 - Arquivos de API usam `camelCase` + sufixo: `testimonial.api.ts`.
+- Arquivos de conteúdo usam `camelCase` + sufixo: `testimonial.content.ts`. Eles
+  exportam uma constante `DEFAULT_...` que o componente usa como valor padrão da
+  prop `content` (veja `FaqAccordion` e `LandingFooter`).
 - Cada seção da landing começa com uma tag `<section>` e cuida do próprio espaçamento
   vertical (`py-16`, `py-20`...). A `Home` só empilha as seções, sem estilos.
 - Use `import type { ... }` quando estiver importando **só tipos** — o TypeScript do
