@@ -1,0 +1,51 @@
+name: CI Web RHDPeople
+
+on:
+  push:
+    branches: [ "develop", "staging", "main" ]
+  pull_request:
+    branches: [ "develop", "staging", "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v4
+
+    - name: Configurar Node.js 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Copiar .env de teste
+      run: cp .env.production.example .env
+
+    - name: Instalar Dependências
+      run: npm ci
+
+    - name: Análise Estática e Padronização (Biome)
+      run: npm run check
+
+    - name: Checar Tipagem e Gerar Build Otimizado
+      run: npm run build
+
+    - name: Testes Unitários (Vitest)
+      run: npm run test
+
+    - name: Instalar Navegadores do Playwright
+      run: npx playwright install --with-deps
+
+    - name: Testes End-to-End (Playwright)
+      run: npm run test:e2e
+      
+    # poder baixar o relatório HTML com os vídeos de erro se o E2E falhar!
+    - name: Salvar Relatório do Playwright
+      uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 7
