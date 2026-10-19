@@ -1,18 +1,22 @@
 import { Clock, FileText, FolderOpen, House, type LucideIcon, Smile, TreePalm } from 'lucide-react';
 import { type CSSProperties, useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
-import footerImage from '../../../assets/interativo/fixos/footer-navegacao-por-gesto.png';
-import statusBarImage from '../../../assets/interativo/fixos/header-do-celular.png';
+import footerDark from '../../../assets/interativo/fixos/dark-footer-navegacao-por-gesto.png';
+import statusBarDark from '../../../assets/interativo/fixos/dark-header-do-celular.png';
+import footerLight from '../../../assets/interativo/fixos/footer-navegacao-por-gesto.png';
+import statusBarLight from '../../../assets/interativo/fixos/header-do-celular.png';
 import { DEFAULT_SHOWCASE } from '../content/showcase.content';
 import { CONTAINER } from '../lib/styles';
 import type {
   Showcase,
   ShowcaseHotspot,
+  ShowcaseImage,
   ShowcaseModal,
   ShowcaseModalId,
   ShowcaseNavId,
   ShowcaseNavItem,
   ShowcaseScreenId,
+  ShowcaseTheme,
 } from '../types/showcase.types';
 
 /** Largura em px dos prints das telas. Todas as coordenadas partem dela. */
@@ -39,6 +43,29 @@ const NAV_ICONS: Record<ShowcaseNavId, LucideIcon> = {
   docs: FolderOpen,
   holerite: FileText,
 };
+
+const STATUS_BAR_IMAGE: ShowcaseImage = { light: statusBarLight, dark: statusBarDark };
+const FOOTER_IMAGE: ShowcaseImage = { light: footerLight, dark: footerDark };
+
+/**
+ * Cores do app por tema. Os prints escuros (e a barra de status e de gestos)
+ * tem fundo transparente, entao o fundo da tela vem daqui. O claro e o
+ * `#eaf6f6` da barra de status; o escuro nao vem nos PNGs e foi estimado.
+ */
+const APP_THEME = {
+  light: {
+    screen: 'bg-[#eaf6f6]',
+    nav: 'border-[#d5e9e4] bg-[#eaf6f6] text-emerald-700',
+    navActive: 'bg-[#e5f3f3]',
+    featured: 'border-white bg-emerald-700',
+  },
+  dark: {
+    screen: 'bg-[#111111]',
+    nav: 'border-white/10 bg-white/5 text-emerald-600',
+    navActive: 'bg-white/5',
+    featured: 'border-[#111111] bg-emerald-600',
+  },
+} as const;
 
 const hotspotKey = (hotspot: ShowcaseHotspot) => `${hotspot.label}-${hotspot.x}-${hotspot.y}`;
 
@@ -67,6 +94,7 @@ function Hotspot({ hotspot, onActivate }: { hotspot: ShowcaseHotspot; onActivate
 type BottomNavProps = {
   items: ShowcaseNavItem[];
   active?: ShowcaseNavId;
+  theme: ShowcaseTheme;
   onNavigate: (to: ShowcaseScreenId) => void;
 };
 
@@ -74,11 +102,16 @@ type BottomNavProps = {
  * O menu e montado em HTML (e nao com o PNG `menu-app-inferior`) porque o PNG ja
  * vem com "Home" marcado, e aqui o item ativo muda conforme a tela.
  */
-function BottomNav({ items, active, onNavigate }: BottomNavProps) {
+function BottomNav({ items, active, theme, onNavigate }: BottomNavProps) {
+  const colors = APP_THEME[theme];
+
   return (
     <nav
       aria-label="Menu do app"
-      className="relative z-10 grid shrink-0 grid-cols-5 border-[#d5e9e4] border-t bg-[#eaf5f2]"
+      className={cn(
+        'relative z-10 grid shrink-0 grid-cols-5 border-t transition-colors duration-300',
+        colors.nav,
+      )}
       style={{ height: px(NAV_HEIGHT) }}
     >
       {items.map((item) => {
@@ -92,9 +125,12 @@ function BottomNav({ items, active, onNavigate }: BottomNavProps) {
             className={cn(
               'flex cursor-pointer flex-col items-center justify-center',
               item.featured
-                ? 'absolute left-1/2 -translate-x-1/2 rounded-full border-2 border-white bg-emerald-700 font-semibold text-white shadow-md'
-                : 'text-emerald-700 transition-colors',
-              !item.featured && (isActive ? 'bg-[#dceee9] font-semibold' : 'font-normal'),
+                ? cn(
+                    'absolute left-1/2 -translate-x-1/2 rounded-full border-2 font-semibold text-white shadow-md',
+                    colors.featured,
+                  )
+                : 'transition-colors',
+              !item.featured && (isActive ? cn(colors.navActive, 'font-semibold') : 'font-normal'),
             )}
             key={item.id}
             onClick={() => onNavigate(item.to)}
@@ -126,6 +162,7 @@ function BottomNav({ items, active, onNavigate }: BottomNavProps) {
 type ModalSheetProps = {
   modalId: ShowcaseModalId;
   modal: ShowcaseModal;
+  theme: ShowcaseTheme;
   onActivate: (hotspot: ShowcaseHotspot) => void;
   onClose: () => void;
 };
@@ -134,7 +171,7 @@ type ModalSheetProps = {
  * Container que sobe da base da tela, como um bottom sheet. Tocar no fundo
  * escurecido tambem fecha. Se for mais alto que a tela, rola por dentro.
  */
-function ModalSheet({ modalId, modal, onActivate, onClose }: ModalSheetProps) {
+function ModalSheet({ modalId, modal, theme, onActivate, onClose }: ModalSheetProps) {
   return (
     <div className="absolute inset-0 z-20 flex flex-col justify-end">
       <button
@@ -159,7 +196,7 @@ function ModalSheet({ modalId, modal, onActivate, onClose }: ModalSheetProps) {
             className="block w-full"
             decoding="async"
             draggable={false}
-            src={modal.image}
+            src={modal.image[theme]}
           />
 
           {modal.hotspots.map((hotspot) => (
@@ -182,13 +219,13 @@ type MobileShowcaseProps = {
 export function MobileShowcase({ content = DEFAULT_SHOWCASE }: MobileShowcaseProps) {
   const [screenId, setScreenId] = useState(content.initialScreen);
   const [modalId, setModalId] = useState<ShowcaseModalId | null>(null);
+  const [theme, setTheme] = useState<ShowcaseTheme>('light');
+  const [isNearViewport, setIsNearViewport] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const screen = content.screens[screenId];
 
-  // Os prints tem ~300KB cada: so baixa as outras telas quando a secao chega
-  // perto da viewport, para a troca de tela nao piscar.
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
@@ -197,21 +234,27 @@ export function MobileShowcase({ content = DEFAULT_SHOWCASE }: MobileShowcasePro
       ([entry]) => {
         if (!entry?.isIntersecting) return;
         observer.disconnect();
-        for (const { image } of [
-          ...Object.values(content.screens),
-          ...Object.values(content.modals),
-        ]) {
-          // decode() deixa a imagem pronta para pintar, nao so baixada
-          const preload = new Image();
-          preload.src = image;
-          preload.decode().catch(() => {});
-        }
+        setIsNearViewport(true);
       },
       { rootMargin: '400px' },
     );
     observer.observe(section);
     return () => observer.disconnect();
-  }, [content.screens, content.modals]);
+  }, []);
+
+  // Os prints tem ~300KB cada: so baixa as outras telas quando a secao chega
+  // perto da viewport, para a troca de tela nao piscar. Baixa apenas o tema em
+  // uso; o outro tema so e baixado se a pessoa alternar.
+  useEffect(() => {
+    if (!isNearViewport) return;
+
+    for (const { image } of [...Object.values(content.screens), ...Object.values(content.modals)]) {
+      // decode() deixa a imagem pronta para pintar, nao so baixada
+      const preload = new Image();
+      preload.src = image[theme];
+      preload.decode().catch(() => {});
+    }
+  }, [isNearViewport, theme, content.screens, content.modals]);
 
   // Esc fecha o container aberto
   const isModalOpen = modalId !== null;
@@ -235,6 +278,8 @@ export function MobileShowcase({ content = DEFAULT_SHOWCASE }: MobileShowcasePro
   function activate(hotspot: ShowcaseHotspot) {
     if ('to' in hotspot) navigate(hotspot.to);
     else if ('modal' in hotspot) setModalId(hotspot.modal);
+    else if ('toggleTheme' in hotspot)
+      setTheme((current) => (current === 'light' ? 'dark' : 'light'));
     else setModalId(null);
   }
 
@@ -269,8 +314,13 @@ export function MobileShowcase({ content = DEFAULT_SHOWCASE }: MobileShowcasePro
         <div className="flex w-full flex-col items-center gap-20 lg:w-auto lg:flex-row lg:gap-10">
           {/* Moldura do celular */}
           <div className="aspect-9/18 w-full max-w-85 shrink-0 rounded-[44px] border-10 border-black bg-black shadow-2xl lg:w-95 lg:max-w-none lg:rounded-[48px]">
-            <div className="@container relative flex size-full flex-col overflow-hidden rounded-[38px] bg-[#eef7f5]">
-              <img alt="" className="w-full shrink-0" src={statusBarImage} />
+            <div
+              className={cn(
+                '@container relative flex size-full flex-col overflow-hidden rounded-[38px] transition-colors duration-300',
+                APP_THEME[theme].screen,
+              )}
+            >
+              <img alt="" className="w-full shrink-0" src={STATUS_BAR_IMAGE[theme]} />
 
               <div
                 className="min-h-0 flex-1 overflow-y-auto overscroll-contain scrollbar-hidden"
@@ -283,7 +333,7 @@ export function MobileShowcase({ content = DEFAULT_SHOWCASE }: MobileShowcasePro
                     decoding="async"
                     draggable={false}
                     loading="lazy"
-                    src={screen.image}
+                    src={screen.image[theme]}
                   />
 
                   {[...content.globalHotspots, ...screen.hotspots].map((hotspot) => (
@@ -296,14 +346,20 @@ export function MobileShowcase({ content = DEFAULT_SHOWCASE }: MobileShowcasePro
                 </div>
               </div>
 
-              <BottomNav active={screen.nav} items={content.nav} onNavigate={navigate} />
+              <BottomNav
+                active={screen.nav}
+                items={content.nav}
+                onNavigate={navigate}
+                theme={theme}
+              />
 
-              <img alt="" className="w-full shrink-0 bg-[#eaf5f2]" src={footerImage} />
+              <img alt="" className="w-full shrink-0" src={FOOTER_IMAGE[theme]} />
 
               {modalId && (
                 <ModalSheet
                   modal={content.modals[modalId]}
                   modalId={modalId}
+                  theme={theme}
                   onActivate={activate}
                   onClose={() => setModalId(null)}
                 />

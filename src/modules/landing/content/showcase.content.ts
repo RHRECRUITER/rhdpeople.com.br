@@ -1,13 +1,25 @@
+import docsDark from '../../../assets/interativo/docs/dark-docs-home.png';
 import docs from '../../../assets/interativo/docs/docs-home.png';
+import feriasDark from '../../../assets/interativo/ferias/dark-ferias-home.png';
+import solicitarFeriasDark from '../../../assets/interativo/ferias/dark-solicitar-ferias-container.png';
 import ferias from '../../../assets/interativo/ferias/ferias-home.png';
 import solicitarFerias from '../../../assets/interativo/ferias/solicitar-ferias-container.png';
+import holeriteDark from '../../../assets/interativo/holerites/dark-holeirites-home.png';
 import holerite from '../../../assets/interativo/holerites/holeirites-home.png';
 import registrarConfirmar from '../../../assets/interativo/home/container-01-confirmar.png';
 import registrarLocalizacao from '../../../assets/interativo/home/container-02-localizacao.png';
+import registrarConfirmarDark from '../../../assets/interativo/home/dark-container-01-confirmar.png';
+import registrarLocalizacaoDark from '../../../assets/interativo/home/dark-container-02-localizacao.png';
+import homeHojeDark from '../../../assets/interativo/home/dark-home-inicial.png';
+import homeMesDark from '../../../assets/interativo/home/dark-home-mes.png';
+import homeSemanaDark from '../../../assets/interativo/home/dark-home-semana.png';
 import homeHoje from '../../../assets/interativo/home/home-inicial.png';
 import homeMes from '../../../assets/interativo/home/home-mes.png';
 import homeSemana from '../../../assets/interativo/home/home-semana.png';
+import perfilDark from '../../../assets/interativo/meu-perfil/dark-meu-perfil-home.png';
 import perfil from '../../../assets/interativo/meu-perfil/meu-perfil-home.png';
+import pontoHojeDark from '../../../assets/interativo/ponto/dark-ponto-hoje.png';
+import pontoMesDark from '../../../assets/interativo/ponto/dark-ponto-mês.png';
 import pontoHoje from '../../../assets/interativo/ponto/ponto-hoje.png';
 import pontoMes from '../../../assets/interativo/ponto/ponto-mês.png';
 import type { Showcase, ShowcaseHotspot } from '../types/showcase.types';
@@ -64,7 +76,7 @@ export const DEFAULT_SHOWCASE: Showcase = {
   initialScreen: 'home-hoje',
   screens: {
     'home-hoje': {
-      image: homeHoje,
+      image: { light: homeHoje, dark: homeHojeDark },
       imageAlt:
         'Tela inicial do app com a jornada do dia, resumo da semana e solicitações recentes',
       nav: 'home',
@@ -77,7 +89,7 @@ export const DEFAULT_SHOWCASE: Showcase = {
       hotspots: [...HOME_TABS, registerHotspot(695)],
     },
     'home-semana': {
-      image: homeSemana,
+      image: { light: homeSemana, dark: homeSemanaDark },
       imageAlt: 'Tela inicial do app com o resumo da semana',
       nav: 'home',
       callout: {
@@ -89,7 +101,7 @@ export const DEFAULT_SHOWCASE: Showcase = {
       hotspots: HOME_TABS,
     },
     'home-mes': {
-      image: homeMes,
+      image: { light: homeMes, dark: homeMesDark },
       imageAlt: 'Tela inicial do app com o resumo do mês',
       nav: 'home',
       callout: {
@@ -101,7 +113,7 @@ export const DEFAULT_SHOWCASE: Showcase = {
       hotspots: HOME_TABS,
     },
     'ponto-hoje': {
-      image: pontoHoje,
+      image: { light: pontoHoje, dark: pontoHojeDark },
       imageAlt: 'Tela de ponto com a linha do tempo do dia e o resumo de horas',
       nav: 'ponto',
       callout: {
@@ -113,7 +125,7 @@ export const DEFAULT_SHOWCASE: Showcase = {
       hotspots: [...PONTO_TABS, registerHotspot(598)],
     },
     'ponto-mes': {
-      image: pontoMes,
+      image: { light: pontoMes, dark: pontoMesDark },
       imageAlt: 'Tela de ponto com o espelho do mês',
       nav: 'ponto',
       callout: {
@@ -125,7 +137,7 @@ export const DEFAULT_SHOWCASE: Showcase = {
       hotspots: PONTO_TABS,
     },
     docs: {
-      image: docs,
+      image: { light: docs, dark: docsDark },
       imageAlt: 'Tela de documentos com pendências, documentos disponíveis e histórico de envios',
       nav: 'docs',
       callout: {
@@ -137,7 +149,7 @@ export const DEFAULT_SHOWCASE: Showcase = {
       hotspots: [],
     },
     holerite: {
-      image: holerite,
+      image: { light: holerite, dark: holeriteDark },
       imageAlt: 'Tela de holerites com o resumo do ano e a lista de holerites para baixar',
       nav: 'holerite',
       callout: {
@@ -149,7 +161,7 @@ export const DEFAULT_SHOWCASE: Showcase = {
       hotspots: [],
     },
     perfil: {
-      image: perfil,
+      image: { light: perfil, dark: perfilDark },
       imageAlt: 'Tela de perfil com cargo, benefícios, informações pessoais e segurança',
       callout: {
         eyebrow: 'Meu perfil',
@@ -160,7 +172,7 @@ export const DEFAULT_SHOWCASE: Showcase = {
       hotspots: [],
     },
     ferias: {
-      image: ferias,
+      image: { light: ferias, dark: feriasDark },
       imageAlt: 'Tela de férias com saldo de dias, solicitação atual e histórico de férias',
       nav: 'ferias',
       callout: {
@@ -183,12 +195,12 @@ export const DEFAULT_SHOWCASE: Showcase = {
   },
   modals: {
     'solicitar-ferias': {
-      image: solicitarFerias,
+      image: { light: solicitarFerias, dark: solicitarFeriasDark },
       label: 'Solicitar férias',
       hotspots: [CLOSE_HOTSPOT, cancelHotspot(790)],
     },
     'registrar-confirmar': {
-      image: registrarConfirmar,
+      image: { light: registrarConfirmar, dark: registrarConfirmarDark },
       label: 'Validação da batida: confirmação',
       hotspots: [
         CLOSE_HOTSPOT,
@@ -204,14 +216,17 @@ export const DEFAULT_SHOWCASE: Showcase = {
       ],
     },
     'registrar-localizacao': {
-      image: registrarLocalizacao,
+      image: { light: registrarLocalizacao, dark: registrarLocalizacaoDark },
       label: 'Validação da batida: localização',
       hotspots: [CLOSE_HOTSPOT],
     },
   },
-  // Foto e nome no topo: abre o perfil de qualquer tela
+  // Presentes no cabecalho de todas as telas
   globalHotspots: [
+    // Foto e nome: abre o perfil
     { label: 'Abrir meu perfil', to: 'perfil', x: 20, y: 45, width: 215, height: 70 },
+    // Icone de sol: alterna o app entre claro e escuro
+    { label: 'Alternar tema do app', toggleTheme: true, x: 388, y: 46, width: 68, height: 68 },
   ],
   nav: [
     { id: 'home', label: 'Home', to: 'home-hoje' },
