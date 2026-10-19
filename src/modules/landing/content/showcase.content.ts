@@ -4,6 +4,10 @@ import feriasDark from '../../../assets/interativo/ferias/dark-ferias-home.png';
 import solicitarFeriasDark from '../../../assets/interativo/ferias/dark-solicitar-ferias-container.png';
 import ferias from '../../../assets/interativo/ferias/ferias-home.png';
 import solicitarFerias from '../../../assets/interativo/ferias/solicitar-ferias-container.png';
+import gestureBarDark from '../../../assets/interativo/fixos/dark-footer-navegacao-por-gesto.png';
+import statusBarDark from '../../../assets/interativo/fixos/dark-header-do-celular.png';
+import gestureBar from '../../../assets/interativo/fixos/footer-navegacao-por-gesto.png';
+import statusBar from '../../../assets/interativo/fixos/header-do-celular.png';
 import holeriteDark from '../../../assets/interativo/holerites/dark-holeirites-home.png';
 import holerite from '../../../assets/interativo/holerites/holeirites-home.png';
 import registrarConfirmar from '../../../assets/interativo/home/container-01-confirmar.png';
@@ -24,14 +28,13 @@ import pontoHoje from '../../../assets/interativo/ponto/ponto-hoje.png';
 import pontoMes from '../../../assets/interativo/ponto/ponto-mês.png';
 import type { Showcase, ShowcaseHotspot } from '../types/showcase.types';
 
-// Abas Hoje / Semana / Mes do topo da Home (mesma posicao nas tres telas)
+// Mesma posicao nas tres telas da Home
 const HOME_TABS: ShowcaseHotspot[] = [
   { label: 'Ver hoje', to: 'home-hoje', x: 52, y: 205, width: 155, height: 70 },
   { label: 'Ver semana', to: 'home-semana', x: 207, y: 205, width: 156, height: 70 },
   { label: 'Ver mês', to: 'home-mes', x: 363, y: 205, width: 155, height: 70 },
 ];
 
-// Abas Hoje / Mes do topo do Ponto
 const PONTO_TABS: ShowcaseHotspot[] = [
   { label: 'Ver hoje', to: 'ponto-hoje', x: 52, y: 242, width: 232, height: 56 },
   { label: 'Ver mês', to: 'ponto-mes', x: 284, y: 242, width: 226, height: 56 },
@@ -47,7 +50,6 @@ const CLOSE_HOTSPOT: ShowcaseHotspot = {
   height: 60,
 };
 
-// Botao "Registrar ponto" (Home e Ponto): abre o fluxo de validacao da batida
 const registerHotspot = (y: number): ShowcaseHotspot => ({
   label: 'Registrar ponto',
   modal: 'registrar-confirmar',
@@ -57,7 +59,6 @@ const registerHotspot = (y: number): ShowcaseHotspot => ({
   height: 60,
 });
 
-// Botao "Cancelar" do rodape dos containers, que tambem fecha
 const cancelHotspot = (y: number): ShowcaseHotspot => ({
   label: 'Cancelar',
   close: true,
@@ -74,6 +75,8 @@ export const DEFAULT_SHOWCASE: Showcase = {
     'Cada colaborador acessa pontos, férias, documentos e holerite direto pelo celular, sem precisar acionar o RH.',
   hint: 'Interaja com o app para explorar cada funcionalidade',
   initialScreen: 'home-hoje',
+  statusBar: { light: statusBar, dark: statusBarDark },
+  gestureBar: { light: gestureBar, dark: gestureBarDark },
   screens: {
     'home-hoje': {
       image: { light: homeHoje, dark: homeHojeDark },
@@ -221,11 +224,8 @@ export const DEFAULT_SHOWCASE: Showcase = {
       hotspots: [CLOSE_HOTSPOT],
     },
   },
-  // Presentes no cabecalho de todas as telas
   globalHotspots: [
-    // Foto e nome: abre o perfil
     { label: 'Abrir meu perfil', to: 'perfil', x: 20, y: 45, width: 215, height: 70 },
-    // Icone de sol: alterna o app entre claro e escuro
     { label: 'Alternar tema do app', toggleTheme: true, x: 388, y: 46, width: 68, height: 68 },
   ],
   nav: [

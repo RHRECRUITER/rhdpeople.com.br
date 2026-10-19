@@ -175,6 +175,7 @@ rhdpeople.com.br/
             ├── api/        # funções que chamam o backend
             ├── components/ # seções da landing (Hero, Pricing, FAQ...)
             ├── content/    # textos e dados fixos das seções (faq, footer, features...)
+            ├── hooks/      # lógica (estado) das seções interativas, ex: useShowcase
             ├── lib/        # estilos e ícones usados pelas seções do módulo
             ├── pages/      # páginas que juntam as seções
             └── types/      # tipos TypeScript daquele módulo
