@@ -249,8 +249,8 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-  --radius-5xl: 30px;
-  --radius-plan: 40px;
+  --radius-5xl: calc(var(--radius) * 3);
+  --radius-plan: calc(var(--radius) * 4);
 }
 
 /* ---------------------------------------------------------------------------
