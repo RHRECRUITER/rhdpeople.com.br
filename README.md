@@ -108,6 +108,31 @@ Instale a extensão **Biome** no VS Code para formatar ao salvar automaticamente
 
 ---
 
+## 3.1. Qualidade de Código e CI/CD
+
+Para mantermos o mesmo rigor arquitetural do nosso backend, este projeto possui uma esteira automatizada de qualidade. 
+
+Sempre que você criar um **Pull Request**, o GitHub Actions executará o nosso `ci.yml`, validando:
+1. **Biome:** Vai quebrar se o código estiver mal formatado ou não seguir as regras do `biome.json`.
+2. **TypeScript:** Vai quebrar se houver erros de tipagem (`npm run build`).
+3. **Testes Unitários:** O Vitest verificará lógicas isoladas.
+4. **Testes End-to-End (E2E):** O Playwright vai abrir um navegador invisível e simular os cliques do usuário.
+
+### Proteção no seu computador (Husky)
+Não se preocupe em lembrar de rodar o Biome! Nós configuramos o **Husky** com `lint-staged`. 
+Toda vez que você digitar `git commit`, ele vai interceptar, analisar **apenas os arquivos que você mexeu**, formatá-los automaticamente e, só então, salvar o commit. Se houver um erro grave que ele não consiga arrumar sozinho, o commit será cancelado para proteger o repositório.
+
+### Padrão de Commits
+Utilizamos o **Conventional Commits**. O nome da sua branch deve ser `feat/nome-da-feature` ou `fix/nome-do-bug`, e a sua mensagem de commit deve seguir o formato:
+`tipo(escopo): descrição no imperativo`
+*(Exemplo: `feat(landing): adiciona carrossel de depoimentos`)*
+
+### Como rodar os testes localmente
+- Testes rápidos de lógica (Vitest): `npm run test`
+- Simulação de navegação do usuário (Playwright): `npm run test:e2e`
+
+---
+
 ## 4. Variáveis de ambiente (.env)
 
 Variáveis de ambiente são configurações que mudam de acordo com o lugar onde o site
@@ -175,6 +200,7 @@ rhdpeople.com.br/
             ├── api/        # funções que chamam o backend
             ├── components/ # seções da landing (Hero, Pricing, FAQ...)
             ├── content/    # textos e dados fixos das seções (faq, footer, features...)
+            ├── hooks/      # lógica (estado) das seções interativas, ex: useShowcase
             ├── lib/        # estilos e ícones usados pelas seções do módulo
             ├── pages/      # páginas que juntam as seções
             └── types/      # tipos TypeScript daquele módulo
