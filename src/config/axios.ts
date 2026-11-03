@@ -8,7 +8,7 @@ export const api = axios.create({
     Accept: 'application/json',
     'Content-Type': 'application/json',
   },
-
+  withXSRFToken: true,
   withCredentials: true,
 });
 // Interceptador de Resposta: Tratamento Global de Exceções
