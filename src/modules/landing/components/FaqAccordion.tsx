@@ -14,12 +14,16 @@ import {
   CATEGORY_LIST,
   CATEGORY_STYLES,
   EYEBROW_BADGE,
+  FAQ_SURFACE,
   QUESTION_CARD,
 } from '../lib/faq.styles';
 import { CONTAINER, SECTION_SURFACE } from '../lib/styles';
 import type { Faq, FaqCategory, FaqCategoryId } from '../types/faq.types';
 
 const questionAnchorId = (id: string) => `faq-${id}`;
+
+// Mesmo breakpoint do `lg` do Tailwind (64rem)
+const DESKTOP_QUERY = '(min-width: 64rem)';
 
 type CategoryItemProps = {
   category: FaqCategory;
@@ -43,7 +47,10 @@ function CategoryItem({ category, isActive, onSelect }: CategoryItemProps) {
 
       <span className="flex min-w-0 flex-col">
         <span className={cn('text-sm leading-5', styles.label)}>{category.title}</span>
-        <span className={cn('text-xs leading-4', styles.subtitle)}>{category.description}</span>
+        {/* 220px reproduz as quebras de linha do Figma */}
+        <span className={cn('max-w-55 text-xs leading-4', styles.subtitle)}>
+          {category.description}
+        </span>
       </span>
     </button>
   );
@@ -54,35 +61,45 @@ type FaqAccordionProps = {
 };
 
 export function FaqAccordion({ content = DEFAULT_FAQ }: FaqAccordionProps) {
-  const [openId, setOpenId] = useState(content.items[0]?.id ?? '');
+  // Como no Figma: no desktop a primeira pergunta ja vem aberta, no mobile todas fechadas.
+  // A categoria ativa fica separada para continuar marcada com tudo fechado.
+  const [openId, setOpenId] = useState(() =>
+    window.matchMedia(DESKTOP_QUERY).matches ? (content.items[0]?.id ?? '') : '',
+  );
+  const [activeCategory, setActiveCategory] = useState(content.items[0]?.category);
 
-  const activeCategory = content.items.find((item) => item.id === openId)?.category;
+  function toggleQuestion(id: string) {
+    setOpenId(id);
+    const category = content.items.find((item) => item.id === id)?.category;
+    if (category) setActiveCategory(category);
+  }
 
   function selectCategory(categoryId: FaqCategoryId) {
     const first = content.items.find((item) => item.category === categoryId);
     if (!first) return;
 
     setOpenId(first.id);
+    setActiveCategory(categoryId);
     document
       .getElementById(questionAnchorId(first.id))
       ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   return (
-    <section className={cn(SECTION_SURFACE, 'relative')} id="faq">
+    <section className={cn(SECTION_SURFACE, FAQ_SURFACE, 'relative')} id="faq">
       <div
         className={cn(
           CONTAINER,
-          'relative flex flex-col gap-5 py-12',
+          'relative flex flex-col gap-3.75 pt-7.5 pb-7.75 lg:py-12',
           // A linha 3 e `1fr` para absorver a sobra de altura das perguntas, senao
           // o CTA descola do menu e cai no rodape da secao.
-          'lg:grid lg:grid-cols-[571px_1fr] lg:grid-rows-[auto_auto_1fr] lg:gap-x-12 lg:gap-y-0',
+          'lg:grid lg:grid-cols-[571px_1fr] lg:grid-rows-[auto_auto_1fr] lg:gap-x-12.5 lg:gap-y-0',
         )}
       >
         <header className="flex flex-col items-center gap-3.75 text-center lg:col-start-1 lg:row-start-1 lg:items-start lg:gap-6.25 lg:pr-6 lg:text-left">
           <span className={EYEBROW_BADGE}>{content.eyebrow}</span>
 
-          <h2 className="font-heading font-bold text-[40px] text-stone-800 leading-12 tracking-[-0.3px] lg:text-[56px] lg:leading-14 lg:tracking-[-0.6px] dark:text-neutral-50">
+          <h2 className="font-heading font-bold text-[40px] text-neutral-800 leading-12 lg:text-stone-800 tracking-[-0.3px] lg:text-[56px] lg:leading-14 lg:tracking-[-0.6px] dark:text-neutral-50">
             {content.title}{' '}
             <span className="text-emerald-700 dark:text-emerald-400">{content.titleHighlight}</span>
           </h2>
@@ -103,10 +120,11 @@ export function FaqAccordion({ content = DEFAULT_FAQ }: FaqAccordionProps) {
           ))}
         </nav>
 
+        {/* No Figma as perguntas tem 699px e avancam 8px sobre o padding direito */}
         <Accordion
-          className="flex w-full max-w-174.75 flex-col gap-2.5 lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:mx-auto lg:gap-6 lg:self-center lg:pl-12"
+          className="flex w-full max-w-174.75 flex-col gap-2.5 lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:-mr-2 lg:w-auto lg:gap-6 lg:self-center"
           collapsible
-          onValueChange={setOpenId}
+          onValueChange={toggleQuestion}
           type="single"
           value={openId}
         >
@@ -117,7 +135,7 @@ export function FaqAccordion({ content = DEFAULT_FAQ }: FaqAccordionProps) {
               key={item.id}
               value={item.id}
             >
-              <AccordionTrigger className="cursor-pointer items-center gap-2.5 font-medium text-black text-sm leading-4.5 data-[state=open]:font-normal lg:text-base lg:leading-6 dark:text-white [&>svg]:size-5">
+              <AccordionTrigger className="min-h-9 cursor-pointer items-center gap-2.5 lg:min-h-0 font-medium text-black text-sm leading-4.5 data-[state=open]:font-normal lg:text-base lg:leading-6 dark:text-white [&>svg]:size-5">
                 {item.question}
               </AccordionTrigger>
 
@@ -128,8 +146,8 @@ export function FaqAccordion({ content = DEFAULT_FAQ }: FaqAccordionProps) {
           ))}
         </Accordion>
 
-        <div className="flex flex-col items-center gap-3.5 lg:col-start-1 lg:row-start-3 lg:mt-6 lg:w-83.25 lg:items-stretch lg:gap-6 lg:self-start">
-          <p className="text-center font-bold text-base text-black lg:text-left lg:text-2xl dark:text-neutral-50">
+        <div className="mt-2 flex flex-col items-center gap-3.5 lg:col-start-1 lg:row-start-3 lg:mt-6 lg:w-83.25 lg:items-stretch lg:gap-6 lg:self-start">
+          <p className="text-center font-bold text-base text-black leading-4.75 lg:text-left lg:text-2xl lg:leading-7.25 dark:text-neutral-50">
             {content.ctaTitle}
           </p>
 
