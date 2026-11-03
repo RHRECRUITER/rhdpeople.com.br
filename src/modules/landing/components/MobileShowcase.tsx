@@ -236,7 +236,7 @@ export function MobileShowcase({ content = DEFAULT_SHOWCASE }: MobileShowcasePro
       <div
         className={cn(
           CONTAINER,
-          'relative flex flex-col items-center gap-8 py-12 lg:gap-14 lg:py-24',
+          'relative flex flex-col items-center gap-8 py-12 lg:gap-14 lg:py-20.5',
         )}
       >
         <header className="flex w-full max-w-225 flex-col items-center gap-4 text-center lg:gap-6">

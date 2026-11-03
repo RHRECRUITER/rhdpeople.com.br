@@ -118,7 +118,7 @@ function PricingContent({ mobile = false }: { mobile?: boolean }) {
       <div className="flex flex-col gap-5">
         <h2
           className={cn(
-            'max-w-115 font-medium tracking-tight text-neutral-700 dark:text-white',
+            'max-w-115 font-heading font-medium tracking-tight text-neutral-700 dark:text-white',
             mobile ? 'text-4xl leading-10' : 'text-[45px] leading-13',
           )}
         >
@@ -127,7 +127,7 @@ function PricingContent({ mobile = false }: { mobile?: boolean }) {
             {DEFAULT_PRICING.highlightTitle.replace('{price}', String(price))}
           </span>
         </h2>
-        <p className="max-w-105 text-2xl text-neutral-800 dark:text-white">
+        <p className="max-w-105 font-heading text-2xl text-neutral-800 leading-7.5 tracking-[-0.15px] dark:text-white">
           {DEFAULT_PRICING.description}
         </p>
       </div>
@@ -140,7 +140,7 @@ function PricingContent({ mobile = false }: { mobile?: boolean }) {
 export function PricingBlock() {
   return (
     <section
-      className="w-full relative px-3.5 bg-[#f9f9f9] dark:bg-neutral-900 sm:py-15"
+      className="w-full relative px-3.5 bg-[#f9f9f9] dark:bg-neutral-900 sm:py-[57.5px]"
       id="planos"
     >
       <div className={cn(CONTAINER, 'px-0 overflow-hidden')}>

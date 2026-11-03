@@ -36,7 +36,7 @@ function ResourceTab({ item }: ResourceTabProps) {
           >
             <Icon className="size-3" strokeWidth={2.26} />
           </span>
-          <span className="font-medium text-[22px] text-neutral-800 leading-7 transition-colors group-data-[state=active]:text-emerald-600 dark:text-neutral-200 dark:group-data-[state=active]:text-emerald-400">
+          <span className="font-heading font-medium text-[22px] text-neutral-800 leading-7 transition-colors group-data-[state=active]:text-emerald-600 dark:text-neutral-200 dark:group-data-[state=active]:text-emerald-400">
             {item.title}
           </span>
         </span>
@@ -63,7 +63,7 @@ function ResourceAccordionTrigger({ item }: ResourceAccordionTriggerProps) {
           >
             <Icon className="size-3" strokeWidth={2.26} />
           </span>
-          <span className="font-medium text-[22px] text-neutral-800 leading-7 transition-colors group-data-[state=open]:text-emerald-600 dark:text-neutral-200 dark:group-data-[state=open]:text-emerald-400">
+          <span className="font-heading font-medium text-[22px] text-neutral-800 leading-7 transition-colors group-data-[state=open]:text-emerald-600 dark:text-neutral-200 dark:group-data-[state=open]:text-emerald-400">
             {item.title}
           </span>
         </span>
@@ -113,7 +113,7 @@ export function ResourcesSection({ content = DEFAULT_RESOURCES }: ResourcesSecti
 
   return (
     <section className="w-full overflow-hidden bg-white dark:bg-neutral-900" id="recursos">
-      <div className={cn(CONTAINER, 'py-16 lg:py-21.75')}>
+      <div className={cn(CONTAINER, 'py-16 lg:py-[80.5px]')}>
         <div className="flex flex-col gap-8 lg:hidden">
           <h2 className="font-heading font-medium text-[40px] text-neutral-700 leading-12 tracking-[-0.3px] dark:text-neutral-200">
             {content.title}

@@ -21,7 +21,7 @@ function AdvantageCard({ advantage, isOpen, onSelect }: AdvantageCardProps) {
     <button
       aria-expanded={isOpen}
       className={cn(
-        'relative h-51 flex-none overflow-hidden rounded-[12px] text-left lg:h-auto lg:flex-1',
+        'relative h-51 flex-none overflow-hidden rounded-5xl text-left lg:h-auto lg:flex-1',
         'transition-[height,flex-grow] duration-500 ease-out',
         'focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2',
         isOpen && 'h-65 lg:flex-[2.3]',
@@ -66,7 +66,7 @@ export function FeaturesGrid({ content = DEFAULT_FEATURES }: FeaturesGridProps) 
 
   return (
     <section className="w-full bg-[#f9f9f9] dark:bg-neutral-900" id="vantagens">
-      <div className={cn(CONTAINER, 'flex flex-col gap-10 py-16 lg:py-20')}>
+      <div className={cn(CONTAINER, 'flex flex-col gap-10 py-16 lg:py-21.75')}>
         <div className="flex items-center justify-between gap-4">
           <h2 className="font-heading font-bold text-[32px] text-neutral-800 leading-9.5 tracking-[-0.3px] lg:text-[48px] lg:leading-14 dark:text-neutral-50">
             {content.title}

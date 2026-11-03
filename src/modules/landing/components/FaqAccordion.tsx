@@ -87,7 +87,7 @@ export function FaqAccordion({ content = DEFAULT_FAQ }: FaqAccordionProps) {
             <span className="text-emerald-700 dark:text-emerald-400">{content.titleHighlight}</span>
           </h2>
 
-          <p className="text-black text-lg leading-7.5 tracking-[-0.15px] lg:max-w-110.5 lg:text-2xl dark:text-neutral-50">
+          <p className="font-heading text-black text-lg leading-7.5 tracking-[-0.15px] lg:max-w-110.5 lg:text-2xl dark:text-neutral-50">
             {content.description}
           </p>
         </header>
