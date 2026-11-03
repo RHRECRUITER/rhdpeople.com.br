@@ -1,5 +1,7 @@
 import { Smile } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import backgroundDark from '../../../assets/interativo/background/dark-background.jpg';
+import backgroundLight from '../../../assets/interativo/background/light-background.jpg';
 import { DEFAULT_SHOWCASE } from '../content/showcase.content';
 import { useShowcase } from '../hooks/useShowcase';
 import { NAV_ICONS } from '../lib/showcase.icons';
@@ -213,7 +215,30 @@ export function MobileShowcase({ content = DEFAULT_SHOWCASE }: MobileShowcasePro
 
   return (
     <section className={SECTION} id="app" ref={sectionRef}>
-      <div className={cn(CONTAINER, 'flex flex-col items-center gap-8 py-12 lg:gap-14 lg:py-24')}>
+      {/* Fundo decorativo de cada tema; o gradiente do SECTION fica por baixo enquanto carrega */}
+      <img
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute inset-0 size-full object-cover dark:hidden"
+        decoding="async"
+        loading="lazy"
+        src={backgroundLight}
+      />
+      <img
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute inset-0 hidden size-full object-cover dark:block"
+        decoding="async"
+        loading="lazy"
+        src={backgroundDark}
+      />
+
+      <div
+        className={cn(
+          CONTAINER,
+          'relative flex flex-col items-center gap-8 py-12 lg:gap-14 lg:py-24',
+        )}
+      >
         <header className="flex w-full max-w-225 flex-col items-center gap-4 text-center lg:gap-6">
           <h2 className={HEADING}>
             {content.title}
