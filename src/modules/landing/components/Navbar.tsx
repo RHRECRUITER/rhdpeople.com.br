@@ -65,14 +65,9 @@ export function Navbar({ content = DEFAULT_NAV }: NavbarProps) {
       <div className={cn(CONTAINER, 'flex items-center py-6 lg:pr-20')}>
         <img alt="RHDPeople" className="h-[23.583px] w-36.25 shrink-0" src={logo} />
 
-        <nav className="ml-auto hidden items-center gap-6 lg:flex">
+        <nav aria-label="Principal" className="ml-auto hidden items-center gap-6 lg:flex">
           {content.links.map((link) => (
-            <a
-              className={DESKTOP_NAV_LINK}
-              href={link.href}
-              key={link.label}
-              onClick={(event) => event.preventDefault()}
-            >
+            <a className={DESKTOP_NAV_LINK} href={link.href} key={link.label}>
               {link.label}
             </a>
           ))}
@@ -97,7 +92,8 @@ export function Navbar({ content = DEFAULT_NAV }: NavbarProps) {
           aria-controls={menuId}
           aria-expanded={isMenuOpen}
           aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
-          className="ml-auto text-white transition-opacity hover:opacity-75 lg:hidden"
+          // p-2 garante a area minima de toque de 24px (WCAG 2.5.8); o -mr-2 mantem o alinhamento
+          className="-mr-2 ml-auto rounded-md p-2 text-white transition-opacity hover:opacity-75 focus-visible:outline-white lg:hidden"
           onClick={() => setIsMenuOpen((open) => !open)}
           type="button"
         >
@@ -121,16 +117,13 @@ export function Navbar({ content = DEFAULT_NAV }: NavbarProps) {
               isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0',
             )}
           >
-            <nav className="flex flex-col items-center gap-6">
+            <nav aria-label="Principal" className="flex flex-col items-center gap-6">
               {content.links.map((link) => (
                 <a
-                  className={NAV_LINK}
+                  className={cn(NAV_LINK, 'rounded-sm focus-visible:outline-white')}
                   href={link.href}
                   key={link.label}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    setIsMenuOpen(false);
-                  }}
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   {link.label}
                 </a>

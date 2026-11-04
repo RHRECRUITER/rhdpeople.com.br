@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { DEFAULT_FOOTER } from '../content/footer.content';
@@ -67,6 +68,8 @@ type LandingFooterProps = {
 };
 
 export function LandingFooter({ content = DEFAULT_FOOTER }: LandingFooterProps) {
+  const columnIdPrefix = useId();
+
   return (
     <footer className={SECTION_SURFACE}>
       <div className={cn(CONTAINER, 'py-8')}>
@@ -105,21 +108,22 @@ export function LandingFooter({ content = DEFAULT_FOOTER }: LandingFooterProps) 
 
               <div className="relative flex flex-1 flex-col gap-14 text-center sm:grid sm:grid-cols-4 sm:gap-x-8 sm:gap-y-10 lg:flex lg:flex-row lg:justify-center lg:gap-14 lg:text-left">
                 {content.columns.map((column, index) => (
+                  // Cada <nav> leva o nome do titulo, senao o leitor de tela lista 4 "navegacao" iguais
                   <nav
+                    aria-labelledby={`${columnIdPrefix}-${index}`}
                     className={cn('flex flex-col gap-5 lg:shrink-0', COLUMN_WIDTHS[index])}
                     key={column.title}
                   >
-                    <h2 className="font-medium text-base text-neutral-900 leading-6 dark:text-neutral-50">
+                    <h2
+                      className="font-medium text-base text-neutral-900 leading-6 dark:text-neutral-50"
+                      id={`${columnIdPrefix}-${index}`}
+                    >
                       {column.title}
                     </h2>
                     <ul className="flex flex-col gap-4">
                       {column.links.map((link) => (
                         <li key={link.label}>
-                          <a
-                            className={COLUMN_LINK}
-                            href={link.href}
-                            onClick={(event) => event.preventDefault()}
-                          >
+                          <a className={COLUMN_LINK} href={link.href}>
                             {link.label}
                           </a>
                         </li>

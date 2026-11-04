@@ -37,6 +37,7 @@ function CategoryItem({ category, isActive, onSelect }: CategoryItemProps) {
 
   return (
     <button
+      aria-current={isActive ? 'true' : undefined}
       className={cn(CATEGORY_ITEM, styles.root)}
       onClick={() => onSelect(category.id)}
       type="button"
@@ -80,9 +81,10 @@ export function FaqAccordion({ content = DEFAULT_FAQ }: FaqAccordionProps) {
 
     setOpenId(first.id);
     setActiveCategory(categoryId);
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     document
       .getElementById(questionAnchorId(first.id))
-      ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      ?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
   }
 
   return (

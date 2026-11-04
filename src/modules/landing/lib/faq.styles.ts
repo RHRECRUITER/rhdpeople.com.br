@@ -32,33 +32,34 @@ export const CATEGORY_LIST = cn(
 
 export const CATEGORY_ITEM = cn(
   'flex h-15.25 w-70.75 shrink-0 snap-start items-center gap-4 rounded-xl p-4 text-left transition-colors',
-  'outline-none focus-visible:ring-3 focus-visible:ring-ring/50',
+  'outline-none focus-visible:ring-3 focus-visible:ring-ring',
   'lg:h-auto lg:w-full lg:shrink',
 );
 
 // #004d40 e o teal da marca no Figma, sem par na paleta, e e o mesmo nos dois
 // temas. A legenda so muda de cor no item inativo, e no escuro o mobile e mais contrastado.
+// No claro a legenda usa #6b7280: o #9ca3af do Figma dava 2,5:1, abaixo do AA (4,5:1).
 export const CATEGORY_STYLES = {
   active: {
     root: 'border-[#004d40] border-l-4 bg-[#ecfdf5] dark:bg-[#ecfdf5]/5 dark:backdrop-blur-md',
     badge: 'rounded-md bg-emerald-100 dark:bg-emerald-100/20',
     icon: 'size-6 text-[#004d40] dark:text-emerald-400',
     label: 'font-bold text-[#004d40] dark:text-emerald-400',
-    subtitle: 'text-[#9ca3af]',
+    subtitle: 'text-[#6b7280] dark:text-[#9ca3af]',
   },
   idle: {
     root: 'hover:bg-emerald-50/60 dark:hover:bg-neutral-800/60',
     badge: 'rounded-full border border-[#e5e7eb] lg:dark:border-[#e5e7eb]/10',
     icon: 'size-5 text-[#374151] dark:text-neutral-50',
     label: 'font-semibold text-[#374151] dark:text-neutral-50',
-    subtitle: 'text-[#9ca3af] lg:dark:text-neutral-50/65',
+    subtitle: 'text-[#6b7280] dark:text-[#9ca3af] lg:dark:text-neutral-50/65',
   },
 } as const;
 
 // Cabecalho. O padding ja desconta a borda: 40px de altura no mobile e 38px no desktop
 export const EYEBROW_BADGE = cn(
   'w-fit rounded-[22px] border border-emerald-200 bg-neutral-50 px-3.25 py-1.75 text-center',
-  'font-semibold text-emerald-600 text-sm leading-6 tracking-[1.5px]',
+  'font-semibold text-emerald-700 text-sm leading-6 tracking-[1.5px]',
   'drop-shadow-[0_4px_8.2px_rgba(0,0,0,0.06)] lg:px-3 lg:py-1.5',
   'dark:border-emerald-200/94 dark:bg-transparent dark:text-neutral-50/65 lg:dark:border-emerald-200/10',
   'dark:drop-shadow-[0_4px_16.4px_rgba(0,0,0,0.06)]',

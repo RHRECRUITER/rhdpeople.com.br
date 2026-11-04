@@ -13,7 +13,7 @@ export function useShowcase(content: Showcase) {
   const [screenId, setScreenId] = useState(content.initialScreen);
   const [modalId, setModalId] = useState<ShowcaseModalId | null>(null);
   const [theme, setTheme] = useState<ShowcaseTheme>('light');
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLElement>(null);
 
   const { ref: sectionRef, inView: isNearViewport } = useInView({
     rootMargin: '400px',
@@ -42,9 +42,33 @@ export function useShowcase(content: Showcase) {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [isModalOpen]);
 
+  // Quem abriu o container e guardado no clique: depois a tela fica `inert` e o foco sai dela
+  const openerRef = useRef<HTMLElement | null>(null);
+
+  // Ao fechar, o foco volta para quem abriu, ou para a tela se ele nao existe mais
+  useEffect(() => {
+    const opener = openerRef.current;
+    if (isModalOpen || !opener) return;
+
+    openerRef.current = null;
+    (opener.isConnected ? opener : scrollRef.current)?.focus({ preventScroll: true });
+  }, [isModalOpen]);
+
+  function openModal(id: ShowcaseModalId) {
+    if (!isModalOpen && document.activeElement instanceof HTMLElement) {
+      openerRef.current = document.activeElement;
+    }
+    setModalId(id);
+  }
+
   const closeModal = () => setModalId(null);
 
   function navigate(to: ShowcaseScreenId) {
+    // A tela nova recria os hotspots; se o foco estava num deles, ele iria para o <body>.
+    // Passa o foco para a regiao rolavel da tela, que continua montada.
+    const scroller = scrollRef.current;
+    if (scroller?.contains(document.activeElement)) scroller.focus({ preventScroll: true });
+
     setScreenId(to);
     closeModal();
     scrollRef.current?.scrollTo({ top: 0 });
@@ -52,7 +76,7 @@ export function useShowcase(content: Showcase) {
 
   function activate(hotspot: ShowcaseHotspot) {
     if ('to' in hotspot) navigate(hotspot.to);
-    else if ('modal' in hotspot) setModalId(hotspot.modal);
+    else if ('modal' in hotspot) openModal(hotspot.modal);
     else if ('toggleTheme' in hotspot) setTheme((t) => (t === 'light' ? 'dark' : 'light'));
     else closeModal();
   }

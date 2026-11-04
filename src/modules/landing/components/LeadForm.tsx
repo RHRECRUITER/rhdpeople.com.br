@@ -82,7 +82,13 @@ export function LeadForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    // "#contact" e o destino dos links "Assinar" e "Montar plano personalizado" do bloco de planos
+    <form
+      aria-busy={isLoading}
+      aria-label="Solicitar demonstração"
+      id="contact"
+      onSubmit={handleSubmit}
+    >
       {/* Armadilha Honeypot: Totalmente oculta para usuários */}
       <div style={{ display: 'none' }} aria-hidden="true">
         <input
@@ -102,6 +108,7 @@ export function LeadForm() {
           id="name"
           type="text"
           name="name"
+          autoComplete="name"
           value={formData.name}
           onChange={handleChange}
           required
@@ -114,6 +121,7 @@ export function LeadForm() {
           id="company_name"
           type="text"
           name="company_name"
+          autoComplete="organization"
           value={formData.company_name}
           onChange={handleChange}
           required
@@ -126,6 +134,7 @@ export function LeadForm() {
           id="corporate_email"
           type="email"
           name="corporate_email"
+          autoComplete="email"
           value={formData.corporate_email}
           onChange={handleChange}
           required
@@ -138,6 +147,7 @@ export function LeadForm() {
           id="phone"
           type="tel"
           name="phone"
+          autoComplete="tel"
           value={formData.phone}
           onChange={handleChange}
           required
@@ -180,9 +190,14 @@ export function LeadForm() {
         </label>
       </fieldset>
 
-      {/* Mensagens de Feedback */}
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      {isSuccess && <p style={{ color: 'green' }}>Demonstração solicitada com sucesso!</p>}
+      {/* Mensagens de Feedback. As regioes ficam sempre montadas para o leitor de tela
+          anunciar quando o texto aparece (WCAG 4.1.3); as cores passam de 4,5:1 */}
+      <p className="text-destructive" role="alert">
+        {errorMessage}
+      </p>
+      <p className="text-emerald-700 dark:text-emerald-400" role="status">
+        {isSuccess && 'Demonstração solicitada com sucesso!'}
+      </p>
 
       <button type="submit" disabled={isLoading}>
         {isLoading ? 'Enviando...' : 'Solicitar Demonstração'}

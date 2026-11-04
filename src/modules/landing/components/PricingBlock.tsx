@@ -22,7 +22,8 @@ function BillingToggle({
   onBillingCycleChange: (billingCycle: BillingCycle) => void;
 }) {
   return (
-    <div className="relative flex w-fit items-center rounded-full bg-emerald-600/10 dark:bg-white/20 text-base leading-none backdrop-blur-md">
+    <fieldset className="relative flex w-fit items-center rounded-full bg-emerald-600/10 dark:bg-white/20 text-base leading-none backdrop-blur-md">
+      <legend className="sr-only">Ciclo de cobrança</legend>
       <button
         aria-pressed={billingCycle === 'annual'}
         className={cn(
@@ -48,7 +49,7 @@ function BillingToggle({
       >
         Mensal
       </button>
-    </div>
+    </fieldset>
   );
 }
 
@@ -72,7 +73,7 @@ function SubscribeAction({ mobile = false }: { mobile?: boolean }) {
   return (
     <div className={cn('flex items-center gap-6', mobile && 'flex-col items-start gap-5')}>
       <a
-        className="flex relative h-13 w-66 items-center justify-between rounded-full border border-white/30 bg-emerald-600 px-2.5 py-4 text-center font-medium text-xl text-white shadow-sm transition-colors hover:bg-emerald-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500"
+        className="flex relative h-13 w-66 items-center justify-between rounded-full border border-white/30 bg-emerald-700 px-2.5 py-4 text-center font-medium text-xl text-white shadow-sm transition-colors hover:bg-emerald-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 dark:focus-visible:outline-white"
         href="#contact"
       >
         <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full">
@@ -85,7 +86,7 @@ function SubscribeAction({ mobile = false }: { mobile?: boolean }) {
       <p className={'max-w-50 text-sm leading-5 text-neutral-800 dark:text-white'}>
         {DEFAULT_PRICING.customPlanLabel}{' '}
         <a
-          className="font-extralight text-emerald-600 dark:text-inherit underline dark:decoration-neutral-100"
+          className="font-medium text-emerald-700 dark:text-inherit underline dark:decoration-neutral-100"
           href="#contact"
         >
           Montar plano personalizado
@@ -123,7 +124,9 @@ function PricingContent({ mobile = false }: { mobile?: boolean }) {
           )}
         >
           {DEFAULT_PRICING.title}{' '}
-          <span className="text-emerald-600">
+          {/* aria-live anuncia o preco novo ao trocar Anual/Mensal. No escuro o emerald-600
+              sumia sobre o degrade verde do card, por isso o 300 */}
+          <span aria-live="polite" className="text-emerald-600 dark:text-emerald-300">
             {DEFAULT_PRICING.highlightTitle.replace('{price}', String(price))}
           </span>
         </h2>

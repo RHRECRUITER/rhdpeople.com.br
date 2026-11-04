@@ -375,6 +375,33 @@
   html {
     @apply font-sans;
   }
+
+  /* Foco padrao solido (WCAG 1.4.11 / 2.4.7). Componentes com `outline-none` +
+     ring proprio continuam valendo, porque utilitarios ganham da camada base. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  /* Respeita quem pediu menos movimento (WCAG 2.3.3): animacoes e transicoes viram instantaneas */
+  /* biome-ignore-start lint/complexity/noImportantStyles: precisa vencer os utilitarios de animacao */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  /* biome-ignore-end lint/complexity/noImportantStyles: fim do bloco de movimento reduzido */
 }
 
 /* Carrosseis que rolam na horizontal, sem a barra atravessada no conteudo. */
