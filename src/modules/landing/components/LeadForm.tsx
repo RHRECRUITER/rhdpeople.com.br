@@ -1,8 +1,10 @@
-import { type FormEvent, useEffect, useState } from 'react';
+import { type FormEvent, useState } from 'react';
 import { type LeadPayload, submitLeadCapture } from '../api/lead.api';
 
 export function LeadForm() {
-  const [formStartedAt, setFormStartedAt] = useState<number>(0);
+  // Momento em que o formulario montou (anti-bot no backend). Inicializador lazy em vez de
+  // useEffect + setState: o valor ja nasce certo e evita um render extra.
+  const [formStartedAt] = useState(() => Math.floor(Date.now() / 1000));
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -18,11 +20,6 @@ export function LeadForm() {
     payroll: false,
     website: '', // HONEYPOT (Obrigatório ir limpo/vazio)
   });
-
-  useEffect(() => {
-    // Registra o tempo inicial assim que o formulário carrega
-    setFormStartedAt(Math.floor(Date.now() / 1000));
-  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;

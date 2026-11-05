@@ -20,15 +20,29 @@ export function useShowcase(content: Showcase) {
     triggerOnce: true,
   });
 
-  // Pre-carrega as telas do tema atual quando a secao se aproxima, para a troca nao piscar
+  // Pre-carrega as telas do tema atual quando a secao se aproxima, para a troca nao piscar.
+  // Roda no tempo ocioso do navegador para nao disputar banda/CPU com o que esta visivel.
   useEffect(() => {
     if (!isNearViewport) return;
 
-    for (const { image } of [...Object.values(content.screens), ...Object.values(content.modals)]) {
-      const preload = new Image();
-      preload.src = image[theme];
-      preload.decode().catch(() => {});
+    const preloadAll = () => {
+      for (const { image } of [
+        ...Object.values(content.screens),
+        ...Object.values(content.modals),
+      ]) {
+        const preload = new Image();
+        preload.src = image[theme];
+        preload.decode().catch(() => {});
+      }
+    };
+
+    // Safari nao tem requestIdleCallback
+    if ('requestIdleCallback' in window) {
+      const id = window.requestIdleCallback(preloadAll, { timeout: 2000 });
+      return () => window.cancelIdleCallback(id);
     }
+    const id = setTimeout(preloadAll, 200);
+    return () => clearTimeout(id);
   }, [isNearViewport, theme, content.screens, content.modals]);
 
   const isModalOpen = modalId !== null;

@@ -1,8 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import heroBackground from '../../../assets/hero-background.png';
+import heroBackground960 from '../../../assets/hero-background-960.webp';
+import heroBackground1440 from '../../../assets/hero-background-1440.webp';
 import { CONTAINER, SECONDARY_ACTION_ON_LIGHT } from '../lib/styles';
 import type { Hero } from '../types/hero.types';
+
+// Imagem do LCP. O mesmo srcset/sizes esta no <link rel="preload"> do index.html:
+// se um mudar, o outro tem que acompanhar, senao o navegador baixa a imagem duas vezes.
+// No mobile a foto ocupa 168,4% da largura (ver classes do <img>), por isso 169vw.
+const HERO_SRCSET = `${heroBackground960} 960w, ${heroBackground1440} 1440w`;
+const HERO_SIZES = '(min-width: 640px) 100vw, 169vw';
 
 const DEFAULT_HERO: Hero = {
   eyebrow: 'GESTÃO DE DP SIMPLIFICADA',
@@ -41,7 +48,9 @@ export function HeroSection({ content = DEFAULT_HERO }: HeroSectionProps) {
           alt=""
           className="absolute top-0 left-[-66.45%] h-full w-[168.4%] max-w-none object-cover sm:left-0 sm:w-full sm:object-[69%_center] lg:object-center"
           fetchPriority="high"
-          src={heroBackground}
+          sizes={HERO_SIZES}
+          src={heroBackground1440}
+          srcSet={HERO_SRCSET}
         />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_86.389%,var(--hero-fade)_100%),linear-gradient(89.57deg,rgba(0,0,0,0.59)_0.28%,transparent_88.68%)]" />
       </div>

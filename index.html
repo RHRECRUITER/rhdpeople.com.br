@@ -9,6 +9,34 @@
       content="RHDPeople: plataforma de gestão de Departamento Pessoal com ponto, férias, documentos e holerite."
     />
     <title>RHDPeople | Gestão de DP simplificada</title>
+
+    <!-- Aplica o tema antes do primeiro paint, senao quem usa tema escuro ve um flash claro
+         ate o React montar. A chave tem que ser a mesma do `storageKey` do ThemeProvider (main.tsx). -->
+    <script>
+      (() => {
+        let theme = 'system';
+        try {
+          theme = localStorage.getItem('vite-ui-theme') || 'system';
+        } catch {}
+        const isDark =
+          theme === 'dark' ||
+          (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.classList.add(isDark ? 'dark' : 'light');
+      })();
+    </script>
+
+    <!-- A foto do hero e o LCP. Numa SPA ela so seria descoberta depois do JS rodar;
+         o preload baixa em paralelo com o bundle. O srcset/sizes tem que ser identico
+         ao do <img> em HeroSection.tsx. -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      fetchpriority="high"
+      href="/src/assets/hero-background-1440.webp"
+      imagesrcset="/src/assets/hero-background-960.webp 960w, /src/assets/hero-background-1440.webp 1440w"
+      imagesizes="(min-width: 640px) 100vw, 169vw"
+    />
   </head>
   <body>
     <div id="root"></div>
