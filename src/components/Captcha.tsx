@@ -1,8 +1,8 @@
 import { RefreshCw } from 'lucide-react';
 import type { Ref } from 'react';
-import { Input } from './ui/input';
 import { DEFAULT_LEAD } from '@/modules/landing/content/lead.content';
 import type { LeadSectionContent } from '@/modules/landing/types/lead.types';
+import { Input } from './ui/input';
 
 type CaptchaProps = {
   image: string | null;

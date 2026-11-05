@@ -43,5 +43,5 @@ export const DEFAULT_LEAD: LeadSectionContent = {
     label: 'Digite o código da imagem',
     loading: 'Carregando...',
     placeholder: 'Digite o código',
-  }
+  },
 };
