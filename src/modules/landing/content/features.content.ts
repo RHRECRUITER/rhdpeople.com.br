@@ -1,7 +1,7 @@
-import imageCentralized from '../../../assets/carrosel/image01.png';
-import imageAutomated from '../../../assets/carrosel/image02.png';
-import imageRealtime from '../../../assets/carrosel/image03.png';
-import imageCompliance from '../../../assets/carrosel/image04.png';
+import imageCentralized from '../../../assets/carrosel/image01.webp';
+import imageAutomated from '../../../assets/carrosel/image02.webp';
+import imageRealtime from '../../../assets/carrosel/image03.webp';
+import imageCompliance from '../../../assets/carrosel/image04.webp';
 import type { Features } from '../types/featuresGrid.type';
 
 export const DEFAULT_FEATURES: Features = {

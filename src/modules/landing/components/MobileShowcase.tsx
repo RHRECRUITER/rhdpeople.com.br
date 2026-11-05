@@ -1,8 +1,10 @@
 import { Smile } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import backgroundDark from '../../../assets/interativo/background/dark-background.jpg';
-import backgroundLight from '../../../assets/interativo/background/light-background.jpg';
+import backgroundDark960 from '../../../assets/interativo/background/dark-background-960.webp';
+import backgroundDark1920 from '../../../assets/interativo/background/dark-background-1920.webp';
+import backgroundLight960 from '../../../assets/interativo/background/light-background-960.webp';
+import backgroundLight1920 from '../../../assets/interativo/background/light-background-1920.webp';
 import { DEFAULT_SHOWCASE } from '../content/showcase.content';
 import { useShowcase } from '../hooks/useShowcase';
 import { NAV_ICONS } from '../lib/showcase.icons';
@@ -237,7 +239,9 @@ export function MobileShowcase({ content = DEFAULT_SHOWCASE }: MobileShowcasePro
         className="pointer-events-none absolute inset-0 size-full object-cover dark:hidden"
         decoding="async"
         loading="lazy"
-        src={backgroundLight}
+        sizes="100vw"
+        src={backgroundLight1920}
+        srcSet={`${backgroundLight960} 960w, ${backgroundLight1920} 1920w`}
       />
       <img
         alt=""
@@ -245,7 +249,9 @@ export function MobileShowcase({ content = DEFAULT_SHOWCASE }: MobileShowcasePro
         className="pointer-events-none absolute inset-0 hidden size-full object-cover dark:block"
         decoding="async"
         loading="lazy"
-        src={backgroundDark}
+        sizes="100vw"
+        src={backgroundDark1920}
+        srcSet={`${backgroundDark960} 960w, ${backgroundDark1920} 1920w`}
       />
 
       <div

@@ -1,6 +1,8 @@
 import { Check, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
-import planImage from '@/assets/cover-plano.png';
+import planImage800 from '@/assets/cover-plano-800.webp';
+import planImage1400 from '@/assets/cover-plano-1400.webp';
+import planImage2000 from '@/assets/cover-plano-2000.webp';
 import { cn } from '@/lib/utils';
 import {
   BILLING_TOGGLE_BUTTON,
@@ -13,6 +15,8 @@ import {
 import { CONTAINER } from '@/modules/landing/lib/styles';
 import type { BillingCycle } from '@/modules/landing/types/pricing.types';
 import { DEFAULT_PRICING } from '../content/pricing.content';
+
+const PLAN_IMAGE_SRCSET = `${planImage800} 800w, ${planImage1400} 1400w, ${planImage2000} 2000w`;
 
 function BillingToggle({
   billingCycle,
@@ -148,10 +152,18 @@ export function PricingBlock() {
     >
       <div className={cn(CONTAINER, 'px-0 overflow-hidden')}>
         <div className="hidden sm:block pointer-events-none absolute left-1/2 right-1/2 -translate-x-1/2 top-19 h-187 w-full max-w-356 bg-linear-to-b from-emerald-600/8 via-emerald-600/8 to-emerald-600/6 blur-[96.1px]" />
-        <div
-          className="relative min-h-203.75 overflow-hidden rounded-plan bg-cover bg-center hidden sm:block"
-          style={{ backgroundImage: `url(${planImage})` }}
-        >
+        {/* <img> no lugar de background-image: ganha srcset e lazy. Com o bloco em
+            display:none (mobile) o navegador nao baixa a imagem lazy */}
+        <div className="relative min-h-203.75 overflow-hidden rounded-plan hidden sm:block">
+          <img
+            alt=""
+            className="pointer-events-none absolute inset-0 size-full object-cover object-center"
+            decoding="async"
+            loading="lazy"
+            sizes="(min-width: 1440px) 1440px, 100vw"
+            src={planImage1400}
+            srcSet={PLAN_IMAGE_SRCSET}
+          />
           <div className="relative z-10 flex min-h-203.75 items-center p-4 lg:p-15">
             <div className="w-149.25">
               <PricingContent />
@@ -164,7 +176,12 @@ export function PricingBlock() {
             <img
               alt="Profissional sorrindo em um escritório"
               className="size-full object-cover scale-160 bg-center -translate-x-11"
-              src={planImage}
+              decoding="async"
+              loading="lazy"
+              // scale-160 amplia a foto alem da largura da tela
+              sizes="160vw"
+              src={planImage1400}
+              srcSet={PLAN_IMAGE_SRCSET}
             />
           </div>
           <PricingContent mobile />
