@@ -6,8 +6,21 @@ export const CARD_OUTER = cn(
   'dark:border-[#ece8fd]/5 dark:bg-neutral-900',
 );
 
-export const CARD_INNER =
-  'overflow-hidden rounded-[48px] border border-[#ece8fd] dark:border-[#ece8fd]/10';
+// Sombra esverdeada do Figma (20% no claro, 5% no escuro).
+export const CARD_INNER = cn(
+  'overflow-hidden rounded-[48px] border border-[#ece8fd] dark:border-[#ece8fd]/10',
+  '[filter:drop-shadow(0_8px_2px_rgba(110,231,183,0.2))_drop-shadow(0_18px_6px_rgba(110,231,183,0.2))]',
+  'dark:[filter:drop-shadow(0_8px_2px_rgba(110,231,183,0.05))_drop-shadow(0_18px_6px_rgba(110,231,183,0.05))]',
+);
+
+// Tres brilhos radiais emerald (15%/15%, 15%/85%, 85%/85%), convertidos do SVG do
+// Figma: raios em % da caixa e opacidade do rect ja aplicada a cor.
+export const LEADING_SURFACE = cn(
+  'bg-white',
+  'bg-[radial-gradient(88.9%_290.2%_at_15%_15%,rgba(110,231,183,0.056)_0%,transparent_44%),radial-gradient(88.9%_290.2%_at_15%_85%,rgba(110,231,183,0.188)_0%,transparent_55%),radial-gradient(88.9%_290.2%_at_85%_85%,rgba(110,231,183,0.128)_0%,transparent_54%)]',
+  'dark:bg-neutral-900',
+  'dark:bg-[radial-gradient(88.9%_290.2%_at_15%_15%,rgba(110,231,183,0.094)_0%,transparent_44%),radial-gradient(88.9%_290.2%_at_15%_85%,rgba(110,231,183,0.028)_0%,transparent_55%),radial-gradient(88.9%_290.2%_at_85%_85%,rgba(110,231,183,0.1)_0%,transparent_54%)]',
+);
 
 // Colunas de links
 // 144 / 93 / 136 / 164 no Figma.
@@ -20,7 +33,7 @@ export const COLUMN_LINK = cn(
 
 // Rodape do cartao
 export const CARD_FOOTER = cn(
-  'border-emerald-300 border-t bg-emerald-300/24 px-6 py-6 lg:px-10',
+  'border-emerald-300 border-t bg-emerald-300/24 px-10 py-6',
   'dark:border-emerald-300/45 dark:bg-emerald-300/12',
 );
 

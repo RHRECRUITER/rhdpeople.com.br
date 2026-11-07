@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { DEFAULT_FOOTER } from '../content/footer.content';
@@ -8,6 +9,7 @@ import {
   CARD_OUTER,
   COLUMN_LINK,
   COLUMN_WIDTHS,
+  LEADING_SURFACE,
   SOCIAL_BUTTON,
 } from '../lib/footer.styles';
 import { CONTAINER, MUTED_TEXT, SECTION_SURFACE } from '../lib/styles';
@@ -54,7 +56,7 @@ function ContactItem({ contact }: { contact: FooterContact }) {
   const Icon = CONTACT_ICONS[contact.icon];
 
   return (
-    <li className={cn(MUTED_TEXT, 'flex items-center gap-2 tracking-[-0.16px]')}>
+    <li className={cn(MUTED_TEXT, 'flex items-center gap-2 font-medium tracking-[-0.16px]')}>
       <Icon className="size-4 shrink-0" />
       {contact.label}
     </li>
@@ -66,17 +68,25 @@ type LandingFooterProps = {
 };
 
 export function LandingFooter({ content = DEFAULT_FOOTER }: LandingFooterProps) {
+  const columnIdPrefix = useId();
+
   return (
     <footer className={SECTION_SURFACE}>
       <div className={cn(CONTAINER, 'py-8')}>
         <div className={CARD_OUTER}>
           <div className={CARD_INNER}>
-            <div className="relative flex flex-col gap-14 bg-white px-6 pt-12 pb-7.5 lg:flex-row lg:gap-27.5 lg:px-12 dark:bg-neutral-900">
+            <div
+              className={cn(
+                LEADING_SURFACE,
+                'relative flex flex-col gap-10.25 px-6 pt-12 pb-7.5 lg:flex-row lg:gap-27.5 lg:px-12',
+              )}
+            >
               <div className="relative flex w-full flex-col items-start gap-4 lg:w-100.75 lg:shrink-0">
                 <LogoLockup />
 
-                <div className="flex flex-col gap-3">
-                  <p className="font-heading font-bold text-[32px] text-neutral-700 leading-9.5 tracking-[-0.2px] dark:text-neutral-50">
+                {/* No mobile o texto centraliza e o titulo cai para 24/30 */}
+                <div className="flex w-full flex-col gap-3 text-center lg:text-left">
+                  <p className="font-bold font-heading text-2xl text-neutral-700 leading-7.5 tracking-[-0.15px] lg:text-[32px] lg:leading-9.5 lg:tracking-[-0.2px] dark:text-neutral-50">
                     {content.title}
                     <br />
                     <span className="text-emerald-600">{content.titleHighlight}</span>
@@ -90,29 +100,30 @@ export function LandingFooter({ content = DEFAULT_FOOTER }: LandingFooterProps) 
                   ))}
                 </ul>
 
-                {/* 249px no Figma */}
-                <Button className="w-62.25" size="xl" type="button">
+                {/* Largura total no mobile, 249px no desktop */}
+                <Button className="w-full lg:w-62.25" size="xl" type="button">
                   {content.ctaLabel}
                 </Button>
               </div>
 
-              <div className="relative grid flex-1 grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-4 lg:flex lg:justify-center lg:gap-14">
+              <div className="relative flex flex-1 flex-col gap-14 text-center sm:grid sm:grid-cols-4 sm:gap-x-8 sm:gap-y-10 lg:flex lg:flex-row lg:justify-center lg:gap-14 lg:text-left">
                 {content.columns.map((column, index) => (
+                  // Cada <nav> leva o nome do titulo, senao o leitor de tela lista 4 "navegacao" iguais
                   <nav
+                    aria-labelledby={`${columnIdPrefix}-${index}`}
                     className={cn('flex flex-col gap-5 lg:shrink-0', COLUMN_WIDTHS[index])}
                     key={column.title}
                   >
-                    <h2 className="font-medium text-base text-neutral-900 leading-6 dark:text-neutral-50">
+                    <h2
+                      className="font-medium text-base text-neutral-900 leading-6 dark:text-neutral-50"
+                      id={`${columnIdPrefix}-${index}`}
+                    >
                       {column.title}
                     </h2>
                     <ul className="flex flex-col gap-4">
                       {column.links.map((link) => (
                         <li key={link.label}>
-                          <a
-                            className={COLUMN_LINK}
-                            href={link.href}
-                            onClick={(event) => event.preventDefault()}
-                          >
+                          <a className={COLUMN_LINK} href={link.href}>
                             {link.label}
                           </a>
                         </li>
@@ -124,8 +135,13 @@ export function LandingFooter({ content = DEFAULT_FOOTER }: LandingFooterProps) 
             </div>
 
             <div className={CARD_FOOTER}>
-              <div className="flex max-w-300 flex-col items-center justify-between gap-4 sm:flex-row">
-                <p className={cn(MUTED_TEXT, 'tracking-[-0.28px] dark:text-[#efefef]')}>
+              <div className="flex max-w-300 flex-col items-center justify-between gap-6 sm:flex-row sm:gap-4">
+                <p
+                  className={cn(
+                    MUTED_TEXT,
+                    'text-center text-xs leading-5 tracking-[-0.28px] sm:text-left sm:text-sm dark:text-[#efefef]',
+                  )}
+                >
                   {content.copyright}
                 </p>
 

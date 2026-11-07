@@ -6,10 +6,12 @@ export const PRICING_DESKTOP_GRADIENT =
 
 export const PRICING_MOBILE_SHADOW = 'dark:shadow-[0px_12px_44.7px] dark:shadow-emerald-600/32';
 
+// Foco em emerald no claro: o contorno branco sumia sobre o fundo branco do card
 export const BILLING_TOGGLE_BUTTON =
-  'relative z-10 flex h-full rounded-full px-5.5 py-3.5 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
+  'relative z-10 flex h-full cursor-pointer rounded-full px-5.5 py-3.5 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 dark:focus-visible:outline-white';
 
+// emerald-700 em vez de 600: branco sobre 600 da 3,8:1, abaixo dos 4,5:1 do WCAG AA
 export const BILLING_TOGGLE_BUTTON_ACTIVE =
-  'text-white font-semibold bg-emerald-600 dark:text-emerald-600 dark:bg-white';
+  'text-white font-semibold bg-emerald-700 dark:text-emerald-700 dark:bg-white';
 
 export const BILLING_TOGGLE_BUTTON_INACTIVE = 'text-[#242734] dark:text-white';

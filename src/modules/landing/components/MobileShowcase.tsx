@@ -1,5 +1,10 @@
 import { Smile } from 'lucide-react';
+import { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
+import backgroundDark960 from '../../../assets/interativo/background/dark-background-960.webp';
+import backgroundDark1920 from '../../../assets/interativo/background/dark-background-1920.webp';
+import backgroundLight960 from '../../../assets/interativo/background/light-background-960.webp';
+import backgroundLight1920 from '../../../assets/interativo/background/light-background-1920.webp';
 import { DEFAULT_SHOWCASE } from '../content/showcase.content';
 import { useShowcase } from '../hooks/useShowcase';
 import { NAV_ICONS } from '../lib/showcase.icons';
@@ -64,17 +69,19 @@ type BottomNavProps = {
   items: ShowcaseNavItem[];
   active?: ShowcaseNavId;
   theme: ShowcaseTheme;
+  inert?: boolean;
   onNavigate: (to: ShowcaseScreenId) => void;
 };
 
 // Em HTML, e nao com o PNG do menu, porque o item ativo muda conforme a tela
-function BottomNav({ items, active, theme, onNavigate }: BottomNavProps) {
+function BottomNav({ items, active, theme, inert, onNavigate }: BottomNavProps) {
   const colors = APP_THEME[theme];
 
   return (
     <nav
       aria-label="Menu do app"
       className={cn(BOTTOM_NAV, colors.nav)}
+      inert={inert}
       style={{ height: px(NAV_HEIGHT) }}
     >
       {items.map((item) => {
@@ -118,6 +125,15 @@ type ModalSheetProps = {
 };
 
 function ModalSheet({ modalId, modal, theme, onActivate, onClose }: ModalSheetProps) {
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  // Ao abrir (e ao trocar de container, que recria os hotspots) o foco vai para o painel.
+  // A volta do foco para quem abriu fica no useShowcase (WCAG 2.4.3).
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (modalId && panel && !panel.contains(document.activeElement)) panel.focus();
+  }, [modalId]);
+
   return (
     <div className="absolute inset-0 z-20 flex flex-col justify-end">
       <button
@@ -128,12 +144,14 @@ function ModalSheet({ modalId, modal, theme, onActivate, onClose }: ModalSheetPr
         type="button"
       />
 
+      {/* Sem aria-modal: o resto da pagina continua utilizavel, so a tela do celular fica inerte */}
       <div
         aria-label={modal.label}
-        aria-modal
-        className={SHEET_PANEL}
+        className={cn(SHEET_PANEL, 'outline-none')}
+        ref={panelRef}
         role="dialog"
         style={{ marginTop: px(STATUS_BAR_HEIGHT) }}
+        tabIndex={-1}
       >
         {/* O key fica aqui para so o conteudo trocar entre containers, sem o painel subir de novo */}
         <div className="relative animate-in fade-in duration-300" key={modalId}>
@@ -210,10 +228,38 @@ export function MobileShowcase({ content = DEFAULT_SHOWCASE }: MobileShowcasePro
     activate,
     closeModal,
   } = useShowcase(content);
+  const isModalOpen = modalId !== null;
 
   return (
     <section className={SECTION} id="app" ref={sectionRef}>
-      <div className={cn(CONTAINER, 'flex flex-col items-center gap-8 py-12 lg:gap-14 lg:py-24')}>
+      {/* Fundo decorativo de cada tema; o gradiente do SECTION fica por baixo enquanto carrega */}
+      <img
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute inset-0 size-full object-cover dark:hidden"
+        decoding="async"
+        loading="lazy"
+        sizes="100vw"
+        src={backgroundLight1920}
+        srcSet={`${backgroundLight960} 960w, ${backgroundLight1920} 1920w`}
+      />
+      <img
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute inset-0 hidden size-full object-cover dark:block"
+        decoding="async"
+        loading="lazy"
+        sizes="100vw"
+        src={backgroundDark1920}
+        srcSet={`${backgroundDark960} 960w, ${backgroundDark1920} 1920w`}
+      />
+
+      <div
+        className={cn(
+          CONTAINER,
+          'relative flex flex-col items-center gap-8 py-12 lg:gap-14 lg:py-20.5',
+        )}
+      >
         <header className="flex w-full max-w-225 flex-col items-center gap-4 text-center lg:gap-6">
           <h2 className={HEADING}>
             {content.title}
@@ -237,9 +283,15 @@ export function MobileShowcase({ content = DEFAULT_SHOWCASE }: MobileShowcasePro
             <div className={cn(PHONE_SCREEN, APP_THEME[theme].screen)}>
               <img alt="" className="w-full shrink-0" src={content.statusBar[theme]} />
 
-              <div
-                className="min-h-0 flex-1 overflow-y-auto overscroll-contain scrollbar-hidden"
+              {/* Regiao rolavel focavel: algumas telas nao tem hotspot, e sem foco nao daria
+                  para rolar pelo teclado (WCAG 2.1.1). Fica inerte com o container aberto. */}
+              <section
+                aria-label="Tela do app"
+                className="min-h-0 flex-1 overflow-y-auto overscroll-contain scrollbar-hidden focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring focus-visible:ring-inset"
+                inert={isModalOpen}
                 ref={scrollRef}
+                // biome-ignore lint/a11y/noNoninteractiveTabindex: regiao rolavel precisa ser alcancavel pelo teclado
+                tabIndex={0}
               >
                 <div className="relative animate-in fade-in duration-300" key={screenId}>
                   <img
@@ -259,10 +311,11 @@ export function MobileShowcase({ content = DEFAULT_SHOWCASE }: MobileShowcasePro
                     />
                   ))}
                 </div>
-              </div>
+              </section>
 
               <BottomNav
                 active={screen.nav}
+                inert={isModalOpen}
                 items={content.nav}
                 onNavigate={navigate}
                 theme={theme}
