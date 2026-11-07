@@ -13,12 +13,16 @@ export const EYEBROW_BADGE = cn(
 );
 
 export const SEAL_BADGE = cn(
-  'flex items-center gap-3 rounded-[10px] px-3.5 py-2 font-bold text-sm tracking-[-0.16px]',
-  'border-2 border-emerald-900 bg-neutral-50/30 text-emerald-900 backdrop-blur-xs',
-  'dark:border-white/15 dark:bg-white/6 dark:text-neutral-50',
+  'flex items-center gap-3 rounded-[10px] px-3.5 py-2 font-bold text-sm/5 tracking-[-0.16px]',
+  'border border-emerald-900 bg-neutral-50/28 text-emerald-900 backdrop-blur-xs',
+  'dark:border-2 dark:border-white/14 dark:bg-white/6 dark:text-neutral-50',
 );
 
 export const LABEL_STYLE = cn('font-medium text-neutral-600 text-xl/6 dark:text-neutral-400');
+
+export const SECTION_HEADING = cn(
+  'font-heading font-semibold text-2xl/7.5 tracking-[-0.15px] dark:text-neutral-300',
+);
 
 export const INPUT_STYLE = cn(
   'h-15 w-full rounded-[8px] border-2 border-neutral-200 bg-neutral-50 px-5',
@@ -32,13 +36,13 @@ export const INPUT_STYLE = cn(
 export const EMPLOYEE_BUTTON = {
   active: cn(
     'flex h-15 w-full items-center justify-center rounded-[10px] border-2',
-    'border-emerald-600 bg-emerald-50 px-3 font-bold text-base text-emerald-600 lg:text-lg',
-    'dark:border-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-300',
+    'border-emerald-600 bg-emerald-50 px-3 font-bold text-lg/7 text-emerald-600',
+    'dark:border-emerald-600 dark:bg-emerald-950/24 dark:text-emerald-300',
     'cursor-pointer transition-all focus-within:ring-3 focus-within:ring-emerald-600/35 focus-within:ring-offset-2 dark:focus-within:ring-emerald-400/35 dark:focus-within:ring-offset-neutral-900',
   ),
   idle: cn(
     'flex h-15 w-full items-center justify-center rounded-[10px] border-2',
-    'border-neutral-200 bg-neutral-50 px-3 font-bold text-base text-neutral-400 lg:text-lg',
+    'border-neutral-200 bg-neutral-50 px-3 font-bold text-lg/7 text-neutral-400',
     'hover:border-neutral-300 dark:border-neutral-700 dark:bg-neutral-900',
     'dark:text-neutral-400 dark:hover:border-neutral-600',
     'cursor-pointer transition-all focus-within:ring-3 focus-within:ring-emerald-600/35 focus-within:ring-offset-2 dark:focus-within:ring-emerald-400/35 dark:focus-within:ring-offset-neutral-900',
@@ -48,13 +52,13 @@ export const EMPLOYEE_BUTTON = {
 export const CHALLENGE_BUTTON = {
   active: cn(
     'flex h-16 items-center justify-between rounded-[10px] border-2 px-6 text-left',
-    'border-emerald-600 bg-emerald-50 font-bold text-base text-emerald-600',
-    'dark:border-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-300',
+    'border-emerald-600 bg-emerald-50 font-bold text-base/6 text-emerald-600',
+    'dark:border-emerald-600 dark:bg-emerald-950/24 dark:text-emerald-300',
     'transition-all cursor-pointer',
   ),
   idle: cn(
     'flex h-16 items-center justify-between rounded-[10px] border-2 px-6 text-left',
-    'border-neutral-200 bg-neutral-50 font-bold text-base text-neutral-400',
+    'border-neutral-200 bg-neutral-50 font-bold text-base/6 text-neutral-400',
     'hover:border-neutral-300 dark:border-neutral-700 dark:bg-neutral-900',
     'dark:text-neutral-400 dark:hover:border-neutral-600',
     'transition-all cursor-pointer',
@@ -62,7 +66,7 @@ export const CHALLENGE_BUTTON = {
 } as const;
 
 export const SUBMIT_BUTTON = cn(
-  'flex w-full items-center justify-center gap-3 rounded-[14px]',
+  'flex w-full items-center justify-center gap-3 rounded-[10px] dark:rounded-[14px]',
   'bg-emerald-700 py-5.5 px-6 font-heading font-semibold text-base/7.5 text-neutral-50 lg:text-2xl/7.5',
   'tracking-[-0.15px] shadow-[0px_5px_4px_rgba(0,0,0,0.2)] transition-colors',
   'hover:bg-emerald-800 disabled:cursor-not-allowed disabled:opacity-70',

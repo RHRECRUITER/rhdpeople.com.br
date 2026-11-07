@@ -1,11 +1,11 @@
-import benefitsImage from '@/assets/recursos/beneficios.png';
-import benefitsDarkImage from '@/assets/recursos/beneficios-dark.png';
-import timeTrackingImage from '@/assets/recursos/controle-ponto.png';
-import timeTrackingDarkImage from '@/assets/recursos/controle-ponto-dark.png';
-import leaveImage from '@/assets/recursos/ferias-licencas.png';
-import leaveDarkImage from '@/assets/recursos/ferias-licencas-dark.png';
-import payrollImage from '@/assets/recursos/folha-pagamento.png';
-import payrollDarkImage from '@/assets/recursos/folha-pagamento-dark.png';
+import benefitsImage from '@/assets/recursos/beneficios.webp';
+import benefitsDarkImage from '@/assets/recursos/beneficios-dark.webp';
+import timeTrackingImage from '@/assets/recursos/controle-ponto.webp';
+import timeTrackingDarkImage from '@/assets/recursos/controle-ponto-dark.webp';
+import leaveImage from '@/assets/recursos/ferias-licencas.webp';
+import leaveDarkImage from '@/assets/recursos/ferias-licencas-dark.webp';
+import payrollImage from '@/assets/recursos/folha-pagamento.webp';
+import payrollDarkImage from '@/assets/recursos/folha-pagamento-dark.webp';
 import type { Resources } from '@/modules/landing/types/resources.types';
 
 export const DEFAULT_RESOURCES: Resources = {

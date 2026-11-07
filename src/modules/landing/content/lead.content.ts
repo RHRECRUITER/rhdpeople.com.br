@@ -8,7 +8,7 @@ export const DEFAULT_LEAD: LeadSectionContent = {
     'Preencha o formulário e nossa equipe entrará em contato para uma demonstração personalizada.',
   checkpoints: ['Demo de 30 minutos', 'Tire suas dúvidas', 'Casos do seu setor', 'Sem compromisso'],
   badges: [
-    { icon: 'shield-check', label: 'LGPD' },
+    { icon: 'shield', label: 'LGPD' },
     { icon: 'globe-lock', label: 'Dados seguros' },
     { icon: 'check', label: 'Sem contrato' },
   ],

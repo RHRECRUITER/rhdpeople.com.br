@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import {
   Accordion,
   AccordionContent,
@@ -36,11 +37,13 @@ function ResourceTab({ item }: ResourceTabProps) {
           >
             <Icon className="size-3" strokeWidth={2.26} />
           </span>
-          <span className="font-medium text-[22px] text-neutral-800 leading-7 transition-colors group-data-[state=active]:text-emerald-600 dark:text-neutral-200 dark:group-data-[state=active]:text-emerald-400">
+          <span className="font-heading font-medium text-[22px] text-neutral-800 leading-7 transition-colors group-data-[state=active]:text-emerald-700 dark:text-neutral-200 dark:group-data-[state=active]:text-emerald-400">
             {item.title}
           </span>
         </span>
-        <span className="text-neutral-500 text-sm leading-5">{item.description}</span>
+        <span className="text-neutral-500 text-sm leading-5 dark:text-neutral-400">
+          {item.description}
+        </span>
       </span>
     </TabsTrigger>
   );
@@ -63,11 +66,13 @@ function ResourceAccordionTrigger({ item }: ResourceAccordionTriggerProps) {
           >
             <Icon className="size-3" strokeWidth={2.26} />
           </span>
-          <span className="font-medium text-[22px] text-neutral-800 leading-7 transition-colors group-data-[state=open]:text-emerald-600 dark:text-neutral-200 dark:group-data-[state=open]:text-emerald-400">
+          <span className="font-heading font-medium text-[22px] text-neutral-800 leading-7 transition-colors group-data-[state=open]:text-emerald-700 dark:text-neutral-200 dark:group-data-[state=open]:text-emerald-400">
             {item.title}
           </span>
         </span>
-        <span className="text-neutral-500 text-sm leading-5">{item.description}</span>
+        <span className="text-neutral-500 text-sm leading-5 dark:text-neutral-400">
+          {item.description}
+        </span>
       </span>
     </AccordionTrigger>
   );
@@ -113,11 +118,11 @@ export function ResourcesSection({ content = DEFAULT_RESOURCES }: ResourcesSecti
 
   return (
     <section className="w-full overflow-hidden bg-white dark:bg-neutral-900" id="recursos">
-      <div className={cn(CONTAINER, 'py-16 lg:py-21.75')}>
+      <div className={cn(CONTAINER, 'py-16 lg:py-[80.5px]')}>
         <div className="flex flex-col gap-8 lg:hidden">
           <h2 className="font-heading font-medium text-[40px] text-neutral-700 leading-12 tracking-[-0.3px] dark:text-neutral-200">
             {content.title}
-            <span className="text-emerald-500">{content.titleHighlight}</span>
+            <span className="text-emerald-600 dark:text-emerald-500">{content.titleHighlight}</span>
           </h2>
 
           <Accordion
@@ -127,8 +132,8 @@ export function ResourcesSection({ content = DEFAULT_RESOURCES }: ResourcesSecti
             type="single"
           >
             {content.items.map((item) => (
-              <>
-                <AccordionItem key={item.id} value={item.id}>
+              <Fragment key={item.id}>
+                <AccordionItem value={item.id}>
                   <ResourceAccordionTrigger item={item} />
                   <AccordionContent>
                     <div className="mx-auto mt-8 max-w-xl">
@@ -136,8 +141,11 @@ export function ResourcesSection({ content = DEFAULT_RESOURCES }: ResourcesSecti
                     </div>
                   </AccordionContent>
                 </AccordionItem>
-                <span className="block h-0.5 rounded-full w-full bg-emerald-600/21 last:hidden lg:hidden" />
-              </>
+                <span
+                  aria-hidden
+                  className="block h-0.5 rounded-full w-full bg-emerald-600/21 last:hidden lg:hidden"
+                />
+              </Fragment>
             ))}
           </Accordion>
         </div>
@@ -152,7 +160,9 @@ export function ResourcesSection({ content = DEFAULT_RESOURCES }: ResourcesSecti
             <div className="flex flex-col gap-8">
               <h2 className="font-heading font-medium text-[45px] text-neutral-700 leading-13 tracking-[-0.3px] dark:text-neutral-200">
                 {content.title}
-                <span className="text-emerald-500">{content.titleHighlight}</span>
+                <span className="text-emerald-600 dark:text-emerald-500">
+                  {content.titleHighlight}
+                </span>
               </h2>
 
               <TabsList

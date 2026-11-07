@@ -57,7 +57,7 @@ export const PHONE_SCREEN =
   '@container relative flex size-full flex-col overflow-hidden rounded-[38px] transition-colors duration-300';
 
 export const HOTSPOT =
-  'absolute cursor-pointer rounded-full outline-none focus-visible:ring-3 focus-visible:ring-ring/50';
+  'absolute cursor-pointer rounded-full outline-none focus-visible:ring-3 focus-visible:ring-ring';
 
 // Menu inferior
 export const BOTTOM_NAV =

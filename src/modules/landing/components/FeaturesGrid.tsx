@@ -1,5 +1,5 @@
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { DEFAULT_FEATURES } from '../content/features.content';
@@ -16,18 +16,22 @@ type AdvantageCardProps = {
 };
 
 function AdvantageCard({ advantage, isOpen, onSelect }: AdvantageCardProps) {
+  const descriptionId = useId();
+
   return (
-    // Mobile: 204px fechado / 260px aberto. Desktop: proporcao 2,3x do Figma (560 / 242)
-    <button
-      aria-expanded={isOpen}
+    // Mobile: 204px fechado / 260px aberto. Desktop: proporcao 2,3x do Figma (560 / 242).
+    // Padrao de accordion: titulo > botao (heading nao pode ficar dentro de <button>).
+    // O clique no card todo e so um atalho de mouse; teclado e leitor de tela usam o botao.
+    // biome-ignore lint/a11y/noStaticElementInteractions: atalho de mouse, o controle acessivel e o botao do titulo
+    // biome-ignore lint/a11y/useKeyWithClickEvents: o teclado aciona o botao do titulo
+    <div
       className={cn(
-        'relative h-51 flex-none overflow-hidden rounded-[12px] text-left lg:h-auto lg:flex-1',
+        'relative h-51 flex-none cursor-pointer overflow-hidden rounded-5xl text-left lg:h-auto lg:flex-1',
         'transition-[height,flex-grow] duration-500 ease-out',
-        'focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2',
+        'has-focus-visible:outline-2 has-focus-visible:outline-ring has-focus-visible:outline-offset-2',
         isOpen && 'h-65 lg:flex-[2.3]',
       )}
       onClick={onSelect}
-      type="button"
     >
       <img
         alt={advantage.imageAlt}
@@ -39,18 +43,27 @@ function AdvantageCard({ advantage, isOpen, onSelect }: AdvantageCardProps) {
 
       <div className="absolute inset-x-0 bottom-0 flex flex-col justify-center gap-1 border-white/15 border-t bg-black/10 p-5 backdrop-blur-sm lg:min-h-34.5 lg:p-8">
         <h3 className="font-heading font-bold text-[#f8ffff] text-xl leading-7 tracking-[-0.2px]">
-          {advantage.title}
+          <button
+            aria-controls={descriptionId}
+            aria-expanded={isOpen}
+            className="cursor-pointer text-left outline-none"
+            type="button"
+          >
+            {advantage.title}
+          </button>
         </h3>
         <p
+          aria-hidden={!isOpen}
           className={cn(
             'max-w-115 overflow-hidden text-[#f8ffff]/80 text-sm leading-5 transition-all duration-500 ease-out',
             isOpen ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0',
           )}
+          id={descriptionId}
         >
           {advantage.description}
         </p>
       </div>
-    </button>
+    </div>
   );
 }
 
@@ -66,7 +79,7 @@ export function FeaturesGrid({ content = DEFAULT_FEATURES }: FeaturesGridProps) 
 
   return (
     <section className="w-full bg-[#f9f9f9] dark:bg-neutral-900" id="vantagens">
-      <div className={cn(CONTAINER, 'flex flex-col gap-10 py-16 lg:py-20')}>
+      <div className={cn(CONTAINER, 'flex flex-col gap-10 py-16 lg:py-21.75')}>
         <div className="flex items-center justify-between gap-4">
           <h2 className="font-heading font-bold text-[32px] text-neutral-800 leading-9.5 tracking-[-0.3px] lg:text-[48px] lg:leading-14 dark:text-neutral-50">
             {content.title}

@@ -1,7 +1,8 @@
-import { Check, GlobeLock, ShieldCheck } from 'lucide-react';
+import { Check, GlobeLock, Shield } from 'lucide-react';
 
+/** Espessura de traço em px absolutos, conforme os ícones dos selos no Figma. */
 export const LEAD_BADGE_ICONS = {
-  'shield-check': ShieldCheck,
-  'globe-lock': GlobeLock,
-  check: Check,
+  shield: { Icon: Shield, strokeWidth: 2 },
+  'globe-lock': { Icon: GlobeLock, strokeWidth: 1.5 },
+  check: { Icon: Check, strokeWidth: 2 },
 } as const;

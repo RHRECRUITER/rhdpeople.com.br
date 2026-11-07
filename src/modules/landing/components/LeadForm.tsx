@@ -16,6 +16,7 @@ import {
   LABEL_STYLE,
   LEAD_CONTAINER,
   SEAL_BADGE,
+  SECTION_HEADING,
   SUBMIT_BUTTON,
 } from '../lib/lead.styles';
 import { formatPhone } from '../lib/lead.utils';
@@ -73,8 +74,8 @@ export function LeadForm({ content = DEFAULT_LEAD }: LeadFormProps) {
   return (
     <section className={cn(SECTION_SURFACE, 'relative min-h-256 flex')} id="demonstracao">
       <div className={cn(LEAD_CONTAINER, 'relative flex-1')}>
-        <div className="flex h-full flex-col gap-12 lg:grid lg:grid-cols-[1fr_1fr] lg:gap-15.75">
-          <div className="relative flex flex-col items-start gap-8 lg:my-auto lg:h-full lg:max-h-195 lg:max-w-xl lg:gap-10">
+        <div className="flex h-full flex-col gap-12 lg:grid lg:grid-cols-[1fr_1fr] lg:gap-15.75 xl:grid-cols-[minmax(0,1fr)_37.0625rem]">
+          <div className="relative flex flex-col items-start gap-6 lg:my-auto lg:h-full lg:max-h-195 lg:max-w-xl">
             <span className={cn(EYEBROW_BADGE, 'relative z-10')}>{content.eyebrow}</span>
 
             <div className="relative z-10 flex flex-col gap-5">
@@ -84,15 +85,15 @@ export function LeadForm({ content = DEFAULT_LEAD }: LeadFormProps) {
                   {content.titleHighlight}
                 </span>
               </h2>
-              <p className="max-w-128.75 text-lg text-neutral-800 leading-relaxed sm:text-xl lg:text-2xl lg:leading-7.5 dark:text-neutral-50">
+              <p className="max-w-128.25 font-heading text-lg text-neutral-800 leading-relaxed tracking-[-0.15px] sm:text-xl lg:text-2xl lg:leading-7.5 dark:text-neutral-50">
                 {content.description}
               </p>
             </div>
 
-            <ul className="relative z-10 flex flex-col gap-5">
+            <ul className="relative z-10 mt-6 flex flex-col gap-5">
               {content.checkpoints.map((checkpoint) => (
                 <li className="flex items-center gap-3.5" key={checkpoint}>
-                  <Check className="size-6 shrink-0 text-emerald-600 dark:text-emerald-300" />
+                  <Check className="size-6 shrink-0 text-emerald-500 dark:text-emerald-300" />
                   <span className="font-medium text-lg text-neutral-600 leading-6.75 dark:text-neutral-300">
                     {checkpoint}
                   </span>
@@ -104,10 +105,14 @@ export function LeadForm({ content = DEFAULT_LEAD }: LeadFormProps) {
 
             <div className="relative z-10 flex flex-wrap items-center gap-5">
               {content.badges.map((badge) => {
-                const Icon = LEAD_BADGE_ICONS[badge.icon];
+                const { Icon, strokeWidth } = LEAD_BADGE_ICONS[badge.icon];
                 return (
                   <div className={SEAL_BADGE} key={badge.label}>
-                    <Icon className="size-4 shrink-0 text-emerald-900 dark:text-neutral-50" />
+                    <Icon
+                      absoluteStrokeWidth
+                      className="size-4 shrink-0 text-emerald-900 dark:text-neutral-50"
+                      strokeWidth={strokeWidth}
+                    />
                     <span>{badge.label}</span>
                   </div>
                 );
@@ -158,133 +163,133 @@ export function LeadForm({ content = DEFAULT_LEAD }: LeadFormProps) {
                   <Input autoComplete="off" tabIndex={-1} type="text" {...register('website')} />
                 </div>
 
-                <h3 className="font-heading font-bold text-[40px] text-neutral-800 leading-12 tracking-[-0.3px] dark:text-neutral-50">
+                <h3 className="text-center font-heading font-bold text-[40px] text-neutral-800 leading-12 tracking-[-0.3px] lg:text-left dark:text-neutral-50">
                   {content.formTitle}
                 </h3>
 
                 <div className="flex flex-col gap-6.5">
-                  <h4 className="font-heading font-semibold text-stone-800 text-xl leading-7.5 dark:text-neutral-300">
-                    {content.contactHeader}
-                  </h4>
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                    <div className="flex flex-col gap-3.5">
-                      <Label className={LABEL_STYLE} htmlFor="lead-name">
-                        {content.fields.name.label}
-                      </Label>
-                      <Input
-                        aria-describedby={fieldError('name') ? `${errorId}-name` : undefined}
-                        aria-invalid={Boolean(fieldError('name'))}
-                        autoComplete="name"
-                        className={INPUT_STYLE}
-                        id="lead-name"
-                        placeholder={content.fields.name.placeholder}
-                        {...register('name')}
-                      />
-                      <ErrorMessage id={`${errorId}-name`} message={fieldError('name')} />
+                  <h4 className={cn(SECTION_HEADING, 'text-stone-800')}>{content.contactHeader}</h4>
+                  <div className="flex flex-col gap-6">
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                      <div className="flex flex-col gap-3.5">
+                        <Label className={LABEL_STYLE} htmlFor="lead-name">
+                          {content.fields.name.label}
+                        </Label>
+                        <Input
+                          aria-describedby={fieldError('name') ? `${errorId}-name` : undefined}
+                          aria-invalid={Boolean(fieldError('name'))}
+                          autoComplete="name"
+                          className={INPUT_STYLE}
+                          id="lead-name"
+                          placeholder={content.fields.name.placeholder}
+                          {...register('name')}
+                        />
+                        <ErrorMessage id={`${errorId}-name`} message={fieldError('name')} />
+                      </div>
+                      <div className="flex flex-col gap-3.5">
+                        <Label className={LABEL_STYLE} htmlFor="lead-company">
+                          {content.fields.company.label}
+                        </Label>
+                        <Input
+                          aria-describedby={
+                            fieldError('company_name') ? `${errorId}-company` : undefined
+                          }
+                          aria-invalid={Boolean(fieldError('company_name'))}
+                          autoComplete="organization"
+                          className={INPUT_STYLE}
+                          id="lead-company"
+                          placeholder={content.fields.company.placeholder}
+                          {...register('company_name')}
+                        />
+                        <ErrorMessage
+                          id={`${errorId}-company`}
+                          message={fieldError('company_name')}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-3.5">
+                        <Label className={LABEL_STYLE} htmlFor="lead-email">
+                          {content.fields.email.label}
+                        </Label>
+                        <Input
+                          aria-describedby={
+                            fieldError('corporate_email') ? `${errorId}-email` : undefined
+                          }
+                          aria-invalid={Boolean(fieldError('corporate_email'))}
+                          autoComplete="email"
+                          className={INPUT_STYLE}
+                          id="lead-email"
+                          placeholder={content.fields.email.placeholder}
+                          type="email"
+                          {...register('corporate_email')}
+                        />
+                        <ErrorMessage
+                          id={`${errorId}-email`}
+                          message={fieldError('corporate_email')}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-3.5">
+                        <Label className={LABEL_STYLE} htmlFor="lead-phone">
+                          {content.fields.phone.label}
+                        </Label>
+                        <Input
+                          aria-describedby={fieldError('phone') ? `${errorId}-phone` : undefined}
+                          aria-invalid={Boolean(fieldError('phone'))}
+                          autoComplete="tel"
+                          className={INPUT_STYLE}
+                          id="lead-phone"
+                          inputMode="tel"
+                          placeholder={content.fields.phone.placeholder}
+                          {...register('phone', {
+                            onChange: (event) => {
+                              setValue('phone', formatPhone(event.target.value), {
+                                shouldDirty: true,
+                                shouldValidate: true,
+                              });
+                            },
+                          })}
+                        />
+                        <ErrorMessage id={`${errorId}-phone`} message={fieldError('phone')} />
+                      </div>
                     </div>
-                    <div className="flex flex-col gap-3.5">
-                      <Label className={LABEL_STYLE} htmlFor="lead-company">
-                        {content.fields.company.label}
-                      </Label>
-                      <Input
-                        aria-describedby={
-                          fieldError('company_name') ? `${errorId}-company` : undefined
-                        }
-                        aria-invalid={Boolean(fieldError('company_name'))}
-                        autoComplete="organization"
-                        className={INPUT_STYLE}
-                        id="lead-company"
-                        placeholder={content.fields.company.placeholder}
-                        {...register('company_name')}
-                      />
-                      <ErrorMessage
-                        id={`${errorId}-company`}
-                        message={fieldError('company_name')}
-                      />
-                    </div>
-                    <div className="flex flex-col gap-3.5">
-                      <Label className={LABEL_STYLE} htmlFor="lead-email">
-                        {content.fields.email.label}
-                      </Label>
-                      <Input
-                        aria-describedby={
-                          fieldError('corporate_email') ? `${errorId}-email` : undefined
-                        }
-                        aria-invalid={Boolean(fieldError('corporate_email'))}
-                        autoComplete="email"
-                        className={INPUT_STYLE}
-                        id="lead-email"
-                        placeholder={content.fields.email.placeholder}
-                        type="email"
-                        {...register('corporate_email')}
-                      />
-                      <ErrorMessage
-                        id={`${errorId}-email`}
-                        message={fieldError('corporate_email')}
-                      />
-                    </div>
-                    <div className="flex flex-col gap-3.5">
-                      <Label className={LABEL_STYLE} htmlFor="lead-phone">
-                        {content.fields.phone.label}
-                      </Label>
-                      <Input
-                        aria-describedby={fieldError('phone') ? `${errorId}-phone` : undefined}
-                        aria-invalid={Boolean(fieldError('phone'))}
-                        autoComplete="tel"
-                        className={INPUT_STYLE}
-                        id="lead-phone"
-                        inputMode="tel"
-                        placeholder={content.fields.phone.placeholder}
-                        {...register('phone', {
-                          onChange: (event) => {
-                            setValue('phone', formatPhone(event.target.value), {
-                              shouldDirty: true,
-                              shouldValidate: true,
-                            });
-                          },
-                        })}
-                      />
-                      <ErrorMessage id={`${errorId}-phone`} message={fieldError('phone')} />
-                    </div>
-                  </div>
 
-                  <fieldset className="m-0 border-0 p-0">
-                    <legend className="mb-3.5 font-medium text-neutral-600 text-lg/6.5 dark:text-neutral-400">
-                      {content.employeeCountHeader}
-                    </legend>
-                    <div className="grid grid-cols-1 auto gap-4 sm:grid-cols-5 lg:grid-cols-2 xl:grid-cols-5">
-                      {content.employeeRanges.map((range) => {
-                        const selected = employeeRange === range;
-                        return (
-                          <Label
-                            className={selected ? EMPLOYEE_BUTTON.active : EMPLOYEE_BUTTON.idle}
-                            key={range}
-                          >
-                            <Input
-                              className="sr-only"
-                              type="radio"
-                              value={range}
-                              {...register('employee_range')}
-                            />
-                            <span>{range}</span>
-                          </Label>
-                        );
-                      })}
-                    </div>
-                    <ErrorMessage
-                      id={`${errorId}-employee-range`}
-                      message={errors.employee_range?.message}
-                    />
-                  </fieldset>
+                    <fieldset className="m-0 border-0 p-0">
+                      <legend className="mb-3.5 font-heading font-medium text-neutral-600 text-xl/6 dark:text-neutral-400">
+                        {content.employeeCountHeader}
+                      </legend>
+                      <div className="grid grid-cols-2 gap-x-[15.5px] gap-y-4 sm:grid-cols-5 lg:grid-cols-3 xl:grid-cols-5">
+                        {content.employeeRanges.map((range) => {
+                          const selected = employeeRange === range;
+                          return (
+                            <Label
+                              className={selected ? EMPLOYEE_BUTTON.active : EMPLOYEE_BUTTON.idle}
+                              key={range}
+                            >
+                              <Input
+                                className="sr-only"
+                                type="radio"
+                                value={range}
+                                {...register('employee_range')}
+                              />
+                              <span>{range}</span>
+                            </Label>
+                          );
+                        })}
+                      </div>
+                      <ErrorMessage
+                        id={`${errorId}-employee-range`}
+                        message={errors.employee_range?.message}
+                      />
+                    </fieldset>
+                  </div>
                 </div>
 
-                <div className="h-px w-full bg-neutral-200 lg:max-w-73 dark:bg-neutral-900/45" />
+                <div className="h-[1.5px] w-full rounded-full bg-neutral-200 lg:max-w-73 dark:bg-neutral-900/45" />
 
-                <fieldset className="flex flex-col gap-6.5 border-0 p-0">
-                  <legend className="font-heading font-semibold text-neutral-800 text-xl leading-7.5 dark:text-neutral-300">
+                <fieldset className="m-0 flex min-w-0 flex-col gap-2 border-0 p-0">
+                  <legend className={cn(SECTION_HEADING, 'mb-6.5 text-neutral-800')}>
                     {content.challengeHeader}
                   </legend>
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-4">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-x-8.25">
                     {content.challenges.map((challenge) => {
                       const selected = objectives[challenge.id];
                       return (
@@ -301,12 +306,10 @@ export function LeadForm({ content = DEFAULT_LEAD }: LeadFormProps) {
                             className={
                               selected
                                 ? 'flex size-6 shrink-0 items-center justify-center rounded-full bg-emerald-600'
-                                : 'size-6 shrink-0 rounded-full border-[1.5px] border-neutral-400 dark:border-neutral-500'
+                                : 'size-6 shrink-0 rounded-full border-[1.5px] border-neutral-400'
                             }
                           >
-                            {selected && (
-                              <span className="size-2.5 rounded-full bg-emerald-50 dark:bg-emerald-100" />
-                            )}
+                            {selected && <span className="size-2.5 rounded-full bg-emerald-50" />}
                           </span>
                         </button>
                       );
@@ -352,7 +355,7 @@ export function LeadForm({ content = DEFAULT_LEAD }: LeadFormProps) {
                       </>
                     )}
                   </button>
-                  <p className="text-center font-bold text-neutral-400 text-sm leading-5">
+                  <p className="text-center font-bold text-neutral-400 text-sm leading-5 tracking-[-0.16px]">
                     {content.termsNotice}{' '}
                     <a
                       className="text-neutral-500 underline dark:text-neutral-300"
