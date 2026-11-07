@@ -12,7 +12,7 @@ export interface ChallengeOption {
 }
 
 export interface LeadChecklistBadge {
-  icon: 'shield-check' | 'globe-lock' | 'check';
+  icon: 'shield' | 'globe-lock' | 'check';
   label: string;
 }
 
