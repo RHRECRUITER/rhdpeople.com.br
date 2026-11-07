@@ -1,192 +1,376 @@
-import { type FormEvent, useEffect, useState } from 'react';
-import { type LeadPayload, submitLeadCapture } from '../api/lead.api';
+import { ArrowRight, Check } from 'lucide-react';
+import { useId } from 'react';
+import { Captcha } from '@/components/Captcha';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
+import { DEFAULT_LEAD } from '../content/lead.content';
+import { useLeadForm } from '../hooks/useLeadForm';
+import { LEAD_BADGE_ICONS } from '../lib/lead.icons';
+import {
+  BACK_BUTTON,
+  CHALLENGE_BUTTON,
+  EMPLOYEE_BUTTON,
+  EYEBROW_BADGE,
+  INPUT_STYLE,
+  LABEL_STYLE,
+  LEAD_CONTAINER,
+  SEAL_BADGE,
+  SUBMIT_BUTTON,
+} from '../lib/lead.styles';
+import { formatPhone } from '../lib/lead.utils';
+import { SECTION_SURFACE } from '../lib/styles';
+import type { ChallengeOptionId, LeadSectionContent } from '../types/lead.types';
 
-export function LeadForm() {
-  const [formStartedAt, setFormStartedAt] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+type LeadFormProps = {
+  content?: LeadSectionContent;
+};
 
-  // Estado dos campos
-  const [formData, setFormData] = useState({
-    name: '',
-    company_name: '',
-    corporate_email: '',
-    phone: '',
-    number_employees: 1,
-    time_tracking: false,
-    payroll: false,
-    website: '', // HONEYPOT (Obrigatório ir limpo/vazio)
-  });
+function ErrorMessage({ id, message }: { id: string; message?: string }) {
+  if (!message) return null;
 
-  useEffect(() => {
-    // Registra o tempo inicial assim que o formulário carrega
-    setFormStartedAt(Math.floor(Date.now() / 1000));
-  }, []);
+  return (
+    <span className="text-red-600 text-sm font-light" id={id} role="alert">
+      {message}
+    </span>
+  );
+}
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
+export function LeadForm({ content = DEFAULT_LEAD }: LeadFormProps) {
+  const errorId = useId();
+  const {
+    errorMessage,
+    captchaCode,
+    captchaError,
+    captchaImage,
+    captchaInputRef,
+    formState: { errors, isSubmitting },
+    isCaptchaLoading,
+    isSuccess,
+    onSubmit,
+    onCaptchaCodeChange,
+    refreshCaptcha,
+    register,
+    setValue,
+    showForm,
+    successTitleRef,
+    watch,
+  } = useLeadForm();
+  const employeeRange = watch('employee_range');
+  const objectives = watch('objective');
+
+  const toggleObjective = (id: ChallengeOptionId) => {
+    setValue(`objective.${id}`, !objectives[id], {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
   };
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setErrorMessage(null);
-    setIsSuccess(false);
-
-    //contrato estrito esperado pelo Laravel
-    const payload: LeadPayload = {
-      name: formData.name,
-      company_name: formData.company_name,
-      corporate_email: formData.corporate_email,
-      phone: formData.phone,
-      number_employees: Number(formData.number_employees),
-      objective: {
-        time_tracking: formData.time_tracking,
-        payroll: formData.payroll,
-      },
-      form_started_at: formStartedAt,
-      website: formData.website, // Honeypot
-    };
-
-    try {
-      // Passar o token do captcha obtido no componente visual de captcha
-      await submitLeadCapture(payload, 'captcha-token-aqui');
-
-      setIsSuccess(true);
-      setFormData({
-        name: '',
-        company_name: '',
-        corporate_email: '',
-        phone: '',
-        number_employees: 1,
-        time_tracking: false,
-        payroll: false,
-        website: '',
-      });
-    } catch (error: any) {
-      if (error.response?.status === 409) {
-        setErrorMessage('Sua solicitação já foi enviada recentemente.');
-      } else if (error.response?.status === 422) {
-        setErrorMessage('Por favor, verifique os dados informados.');
-      } else {
-        setErrorMessage('Ocorreu um erro ao enviar a solicitação. Tente novamente.');
-      }
-    } finally {
-      setIsLoading(false);
-    }
+  const fieldError = (field: 'name' | 'company_name' | 'corporate_email' | 'phone') => {
+    return errors[field]?.message;
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {/* Armadilha Honeypot: Totalmente oculta para usuários */}
-      <div style={{ display: 'none' }} aria-hidden="true">
-        <input
-          type="text"
-          name="website"
-          value={formData.website}
-          onChange={handleChange}
-          tabIndex={-1}
-          autoComplete="off"
-        />
+    <section className={cn(SECTION_SURFACE, 'relative min-h-256 flex')} id="demonstracao">
+      <div className={cn(LEAD_CONTAINER, 'relative flex-1')}>
+        <div className="flex h-full flex-col gap-12 lg:grid lg:grid-cols-[1fr_1fr] lg:gap-15.75">
+          <div className="relative flex flex-col items-start gap-8 lg:my-auto lg:h-full lg:max-h-195 lg:max-w-xl lg:gap-10">
+            <span className={cn(EYEBROW_BADGE, 'relative z-10')}>{content.eyebrow}</span>
+
+            <div className="relative z-10 flex flex-col gap-5">
+              <h2 className="font-heading font-bold text-4xl text-stone-800 tracking-[-0.8px] sm:text-5xl lg:text-[64px] lg:leading-19 dark:text-neutral-50">
+                <span className="block">{content.title}</span>
+                <span className="block text-emerald-700 dark:text-emerald-400">
+                  {content.titleHighlight}
+                </span>
+              </h2>
+              <p className="max-w-128.75 text-lg text-neutral-800 leading-relaxed sm:text-xl lg:text-2xl lg:leading-7.5 dark:text-neutral-50">
+                {content.description}
+              </p>
+            </div>
+
+            <ul className="relative z-10 flex flex-col gap-5">
+              {content.checkpoints.map((checkpoint) => (
+                <li className="flex items-center gap-3.5" key={checkpoint}>
+                  <Check className="size-6 shrink-0 text-emerald-600 dark:text-emerald-300" />
+                  <span className="font-medium text-lg text-neutral-600 leading-6.75 dark:text-neutral-300">
+                    {checkpoint}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="relative z-10 mt-auto h-px w-full max-w-142.25 bg-emerald-700/18 dark:bg-white/10" />
+
+            <div className="relative z-10 flex flex-wrap items-center gap-5">
+              {content.badges.map((badge) => {
+                const Icon = LEAD_BADGE_ICONS[badge.icon];
+                return (
+                  <div className={SEAL_BADGE} key={badge.label}>
+                    <Icon className="size-4 shrink-0 text-emerald-900 dark:text-neutral-50" />
+                    <span>{badge.label}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="relative z-10 flex w-full lg:max-w-148.25">
+            {isSuccess ? (
+              <div className="flex flex-1 flex-col items-center justify-center py-12 text-center lg:py-20">
+                <div className="flex w-full flex-col items-center gap-12">
+                  <div className="flex flex-col items-center gap-6.25">
+                    <div className="flex items-center justify-center rounded-full bg-emerald-200 p-3.75 dark:bg-emerald-900">
+                      <div className="flex size-32 items-center justify-center rounded-full bg-emerald-50 sm:size-36 lg:size-37.25 dark:bg-emerald-600">
+                        <Check
+                          className="size-12 text-emerald-600 dark:text-neutral-50"
+                          strokeWidth={3}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-5">
+                      <div className="flex flex-col">
+                        <h3
+                          className="font-heading font-bold text-3xl text-neutral-800 leading-tight tracking-[-0.3px] lg:text-[40px] lg:leading-12 dark:text-neutral-50"
+                          ref={successTitleRef}
+                          tabIndex={-1}
+                        >
+                          {content.successTitle}
+                        </h3>
+                        <h4 className="font-heading font-bold text-3xl text-emerald-500 leading-tight tracking-[-0.3px] lg:text-[40px] lg:leading-12 dark:text-emerald-400">
+                          {content.successTitleHighlight}
+                        </h4>
+                      </div>
+                      <p className="max-w-117.5 font-medium text-base text-neutral-500 leading-relaxed sm:text-lg lg:text-xl/6 dark:text-neutral-300">
+                        {content.successDescription}
+                      </p>
+                    </div>
+                  </div>
+                  <button className={BACK_BUTTON} onClick={showForm} type="button">
+                    <ArrowRight className="size-6.5 shrink-0 rotate-180" />
+                    <span>{content.backButtonText}</span>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <form className="flex w-full flex-col gap-8" onSubmit={onSubmit}>
+                <div aria-hidden="true" className="hidden">
+                  <Input autoComplete="off" tabIndex={-1} type="text" {...register('website')} />
+                </div>
+
+                <h3 className="font-heading font-bold text-[40px] text-neutral-800 leading-12 tracking-[-0.3px] dark:text-neutral-50">
+                  {content.formTitle}
+                </h3>
+
+                <div className="flex flex-col gap-6.5">
+                  <h4 className="font-heading font-semibold text-stone-800 text-xl leading-7.5 dark:text-neutral-300">
+                    {content.contactHeader}
+                  </h4>
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                    <div className="flex flex-col gap-3.5">
+                      <Label className={LABEL_STYLE} htmlFor="lead-name">
+                        {content.fields.name.label}
+                      </Label>
+                      <Input
+                        aria-describedby={fieldError('name') ? `${errorId}-name` : undefined}
+                        aria-invalid={Boolean(fieldError('name'))}
+                        autoComplete="name"
+                        className={INPUT_STYLE}
+                        id="lead-name"
+                        placeholder={content.fields.name.placeholder}
+                        {...register('name')}
+                      />
+                      <ErrorMessage id={`${errorId}-name`} message={fieldError('name')} />
+                    </div>
+                    <div className="flex flex-col gap-3.5">
+                      <Label className={LABEL_STYLE} htmlFor="lead-company">
+                        {content.fields.company.label}
+                      </Label>
+                      <Input
+                        aria-describedby={
+                          fieldError('company_name') ? `${errorId}-company` : undefined
+                        }
+                        aria-invalid={Boolean(fieldError('company_name'))}
+                        autoComplete="organization"
+                        className={INPUT_STYLE}
+                        id="lead-company"
+                        placeholder={content.fields.company.placeholder}
+                        {...register('company_name')}
+                      />
+                      <ErrorMessage
+                        id={`${errorId}-company`}
+                        message={fieldError('company_name')}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-3.5">
+                      <Label className={LABEL_STYLE} htmlFor="lead-email">
+                        {content.fields.email.label}
+                      </Label>
+                      <Input
+                        aria-describedby={
+                          fieldError('corporate_email') ? `${errorId}-email` : undefined
+                        }
+                        aria-invalid={Boolean(fieldError('corporate_email'))}
+                        autoComplete="email"
+                        className={INPUT_STYLE}
+                        id="lead-email"
+                        placeholder={content.fields.email.placeholder}
+                        type="email"
+                        {...register('corporate_email')}
+                      />
+                      <ErrorMessage
+                        id={`${errorId}-email`}
+                        message={fieldError('corporate_email')}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-3.5">
+                      <Label className={LABEL_STYLE} htmlFor="lead-phone">
+                        {content.fields.phone.label}
+                      </Label>
+                      <Input
+                        aria-describedby={fieldError('phone') ? `${errorId}-phone` : undefined}
+                        aria-invalid={Boolean(fieldError('phone'))}
+                        autoComplete="tel"
+                        className={INPUT_STYLE}
+                        id="lead-phone"
+                        inputMode="tel"
+                        placeholder={content.fields.phone.placeholder}
+                        {...register('phone', {
+                          onChange: (event) => {
+                            setValue('phone', formatPhone(event.target.value), {
+                              shouldDirty: true,
+                              shouldValidate: true,
+                            });
+                          },
+                        })}
+                      />
+                      <ErrorMessage id={`${errorId}-phone`} message={fieldError('phone')} />
+                    </div>
+                  </div>
+
+                  <fieldset className="m-0 border-0 p-0">
+                    <legend className="mb-3.5 font-medium text-neutral-600 text-lg/6.5 dark:text-neutral-400">
+                      {content.employeeCountHeader}
+                    </legend>
+                    <div className="grid grid-cols-1 auto gap-4 sm:grid-cols-5 lg:grid-cols-2 xl:grid-cols-5">
+                      {content.employeeRanges.map((range) => {
+                        const selected = employeeRange === range;
+                        return (
+                          <Label
+                            className={selected ? EMPLOYEE_BUTTON.active : EMPLOYEE_BUTTON.idle}
+                            key={range}
+                          >
+                            <Input
+                              className="sr-only"
+                              type="radio"
+                              value={range}
+                              {...register('employee_range')}
+                            />
+                            <span>{range}</span>
+                          </Label>
+                        );
+                      })}
+                    </div>
+                    <ErrorMessage
+                      id={`${errorId}-employee-range`}
+                      message={errors.employee_range?.message}
+                    />
+                  </fieldset>
+                </div>
+
+                <div className="h-px w-full bg-neutral-200 lg:max-w-73 dark:bg-neutral-900/45" />
+
+                <fieldset className="flex flex-col gap-6.5 border-0 p-0">
+                  <legend className="font-heading font-semibold text-neutral-800 text-xl leading-7.5 dark:text-neutral-300">
+                    {content.challengeHeader}
+                  </legend>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-4">
+                    {content.challenges.map((challenge) => {
+                      const selected = objectives[challenge.id];
+                      return (
+                        <button
+                          aria-pressed={selected}
+                          className={selected ? CHALLENGE_BUTTON.active : CHALLENGE_BUTTON.idle}
+                          key={challenge.id}
+                          onClick={() => toggleObjective(challenge.id)}
+                          type="button"
+                        >
+                          <span className="truncate pr-2">{challenge.label}</span>
+                          <span
+                            aria-hidden="true"
+                            className={
+                              selected
+                                ? 'flex size-6 shrink-0 items-center justify-center rounded-full bg-emerald-600'
+                                : 'size-6 shrink-0 rounded-full border-[1.5px] border-neutral-400 dark:border-neutral-500'
+                            }
+                          >
+                            {selected && (
+                              <span className="size-2.5 rounded-full bg-emerald-50 dark:bg-emerald-100" />
+                            )}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <input
+                    aria-describedby={errors.objective ? `${errorId}-objective` : undefined}
+                    className="sr-only"
+                    type="checkbox"
+                    {...register('objective.vacation')}
+                  />
+                  <ErrorMessage id={`${errorId}-objective`} message={errors.objective?.message} />
+                </fieldset>
+
+                {errorMessage && (
+                  <div
+                    aria-live="polite"
+                    className="rounded-lg border border-red-200 bg-red-50 p-4 font-medium text-red-700 text-sm dark:border-red-800 dark:bg-red-950/30 dark:text-red-300"
+                    role="alert"
+                  >
+                    {errorMessage}
+                  </div>
+                )}
+
+                <Captcha
+                  disabled={isSubmitting || isCaptchaLoading}
+                  error={captchaError}
+                  image={captchaImage}
+                  inputRef={captchaInputRef}
+                  onChange={onCaptchaCodeChange}
+                  onRefresh={() => void refreshCaptcha()}
+                  value={captchaCode}
+                />
+
+                <div className="flex flex-col items-center gap-4">
+                  <button className={SUBMIT_BUTTON} disabled={isSubmitting} type="submit">
+                    {isSubmitting ? (
+                      <span>{content.submitButtonLoading}</span>
+                    ) : (
+                      <>
+                        <span>{content.submitButtonText}</span>
+                        <ArrowRight className="size-6.5 shrink-0" />
+                      </>
+                    )}
+                  </button>
+                  <p className="text-center font-bold text-neutral-400 text-sm leading-5">
+                    {content.termsNotice}{' '}
+                    <a
+                      className="text-neutral-500 underline dark:text-neutral-300"
+                      href="#privacidade"
+                    >
+                      {content.privacyPolicyText}
+                    </a>{' '}
+                    e{' '}
+                    <a className="text-neutral-500 underline dark:text-neutral-300" href="#termos">
+                      {content.termsOfUseText}
+                    </a>
+                  </p>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
       </div>
-
-      {/* Campos do Formulário */}
-      <div>
-        <label htmlFor="name">Nome completo</label>
-        <input
-          id="name"
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div>
-        <label htmlFor="company_name">Empresa</label>
-        <input
-          id="company_name"
-          type="text"
-          name="company_name"
-          value={formData.company_name}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div>
-        <label htmlFor="corporate_email">E-mail corporativo</label>
-        <input
-          id="corporate_email"
-          type="email"
-          name="corporate_email"
-          value={formData.corporate_email}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div>
-        <label htmlFor="phone">Telefone</label>
-        <input
-          id="phone"
-          type="tel"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      <div>
-        <label htmlFor="number_employees">Nº de Funcionários</label>
-        <input
-          id="number_employees"
-          type="number"
-          name="number_employees"
-          value={formData.number_employees}
-          onChange={handleChange}
-          min={1}
-          required
-        />
-      </div>
-
-      {/* Objetivos / Módulos */}
-      <fieldset>
-        <legend>Módulos desejados</legend>
-        <label>
-          <input
-            type="checkbox"
-            name="time_tracking"
-            checked={formData.time_tracking}
-            onChange={handleChange}
-          />
-          Controle de Ponto
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            name="payroll"
-            checked={formData.payroll}
-            onChange={handleChange}
-          />
-          Folha de Pagamento
-        </label>
-      </fieldset>
-
-      {/* Mensagens de Feedback */}
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      {isSuccess && <p style={{ color: 'green' }}>Demonstração solicitada com sucesso!</p>}
-
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? 'Enviando...' : 'Solicitar Demonstração'}
-      </button>
-    </form>
+    </section>
   );
 }
