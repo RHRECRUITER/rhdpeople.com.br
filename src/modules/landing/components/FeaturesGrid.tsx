@@ -32,6 +32,9 @@ function AdvantageCard({ advantage, isOpen, onSelect }: AdvantageCardProps) {
         isOpen && 'h-65 lg:flex-[2.3]',
       )}
       onClick={onSelect}
+      onPointerEnter={(event) => {
+        if (event.pointerType === 'mouse') onSelect();
+      }}
     >
       <img
         alt={advantage.imageAlt}
