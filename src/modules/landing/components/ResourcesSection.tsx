@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import {
   Accordion,
   AccordionContent,
@@ -15,13 +15,17 @@ import type { Resource, Resources } from '@/modules/landing/types/resources.type
 
 type ResourceTabProps = {
   item: Resource;
+  onHover: () => void;
 };
 
-function ResourceTab({ item }: ResourceTabProps) {
+function ResourceTab({ item, onHover }: ResourceTabProps) {
   const Icon = RESOURCE_ICONS[item.icon];
 
   return (
     <TabsTrigger
+      onPointerEnter={(event) => {
+        if (event.pointerType === 'mouse') onHover();
+      }}
       className="group flex cursor-pointer items-start gap-6 rounded-none border-0 p-0 text-left whitespace-normal transition-colors duration-300 dark:data-[state=inactive]:hover:bg-emerald-950/30 focus-visible:outline-2 focus-visible:outline-emerald-500 focus-visible:outline-offset-2 after:content-none lg:gap-8"
       value={item.id}
     >
@@ -115,6 +119,9 @@ type ResourcesSectionProps = {
 export function ResourcesSection({ content = DEFAULT_RESOURCES }: ResourcesSectionProps) {
   const itemsKey = content.items.map((item) => item.id).join();
   const defaultId = content.items[0]?.id;
+  const [activeId, setActiveId] = useState<string | undefined>(defaultId);
+  // Se a lista de itens mudar e o ativo sumir, volta para o primeiro.
+  const tabValue = content.items.some((item) => item.id === activeId) ? activeId : defaultId;
 
   return (
     <section className="w-full overflow-hidden bg-white dark:bg-neutral-900" id="recursos">
@@ -153,9 +160,9 @@ export function ResourcesSection({ content = DEFAULT_RESOURCES }: ResourcesSecti
         <div className="hidden lg:block">
           <Tabs
             className="mx-auto grid max-w-328 grid-cols-2 items-start gap-12"
-            defaultValue={defaultId}
-            key={itemsKey}
+            onValueChange={setActiveId}
             orientation="vertical"
+            value={tabValue}
           >
             <div className="flex flex-col gap-8">
               <h2 className="font-heading font-medium text-[45px] text-neutral-700 leading-13 tracking-[-0.3px] dark:text-neutral-200">
@@ -171,7 +178,7 @@ export function ResourcesSection({ content = DEFAULT_RESOURCES }: ResourcesSecti
                 variant="line"
               >
                 {content.items.map((item) => (
-                  <ResourceTab item={item} key={item.id} />
+                  <ResourceTab item={item} key={item.id} onHover={() => setActiveId(item.id)} />
                 ))}
               </TabsList>
             </div>

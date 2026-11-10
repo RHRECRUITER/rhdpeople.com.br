@@ -37,6 +37,7 @@ export function HeroSection({ content = DEFAULT_HERO }: HeroSectionProps) {
         'bg-white [--hero-fade:#ffffff] lg:bg-emerald-50 lg:[--hero-fade:var(--emerald-50)]',
         'dark:bg-neutral-900 dark:[--hero-fade:var(--neutral-900)]',
       )}
+      id="inicio"
     >
       {/* No mobile a foto e uma faixa no topo, ampliada e deslocada para enquadrar como no
           Figma; no desktop ela ocupa a secao inteira */}

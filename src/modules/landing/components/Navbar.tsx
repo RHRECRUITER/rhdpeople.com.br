@@ -9,11 +9,11 @@ import type { Nav } from '../types/nav.types';
 
 const DEFAULT_NAV: Nav = {
   links: [
-    { label: 'Produto', href: '#produto' },
-    { label: 'Funcionalidades', href: '#funcionalidades' },
+    { label: 'Produto', href: '#inicio' },
+    { label: 'Funcionalidades', href: '#app' },
     { label: 'Planos', href: '#planos' },
     { label: 'Recursos', href: '#recursos' },
-    { label: 'Sobre', href: '#sobre' },
+    { label: 'Sobre', href: '#demonstracao' },
     { label: 'FAQ', href: '#faq' },
   ],
 };
