@@ -1,10 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { isAxiosError } from 'axios';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { generateCaptcha, verifyCaptcha } from '../api/captcha.api';
 import { submitLeadCapture } from '../api/lead.api';
 import { type LeadFormData, type LeadPayload, leadSchema } from '../types/lead.types';
+import { useCaptcha } from './useCaptcha';
 
 const DEFAULT_VALUES: LeadFormData = {
   name: '',
@@ -33,40 +33,24 @@ const FORM_FIELDS = new Set<keyof LeadFormData>([
 
 export function useLeadForm() {
   const formStartedAt = useRef(0);
-  const successTitleRef = useRef<HTMLHeadingElement>(null);
   const captchaInputRef = useRef<HTMLInputElement>(null);
-  const validationToken = useRef<string | null>(null);
-  const [captchaKey, setCaptchaKey] = useState<string | null>(null);
-  const [captchaImage, setCaptchaImage] = useState<string | null>(null);
-  const [captchaCode, setCaptchaCode] = useState('');
-  const [captchaError, setCaptchaError] = useState<string | null>(null);
-  const [isCaptchaLoading, setIsCaptchaLoading] = useState(true);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const captcha = useCaptcha();
   const form = useForm<LeadFormData>({
     defaultValues: DEFAULT_VALUES,
     mode: 'onTouched',
     resolver: zodResolver(leadSchema),
   });
 
-  const refreshCaptcha = useCallback(async () => {
-    setIsCaptchaLoading(true);
-    setCaptchaError(null);
-    setCaptchaCode('');
-    validationToken.current = null;
-
-    try {
-      const captcha = await generateCaptcha();
-      setCaptchaKey(captcha.captcha_key);
-      setCaptchaImage(captcha.captcha_image);
-    } catch {
-      setCaptchaKey(null);
-      setCaptchaImage(null);
-      setCaptchaError('Não foi possível carregar o captcha. Atualize e tente novamente.');
-    } finally {
-      setIsCaptchaLoading(false);
-    }
-  }, []);
+  function buildLeadPayload(data: LeadFormData, formStartedAt: number): LeadPayload {
+    return {
+      ...data,
+      employee_range: data.employee_range as LeadPayload['employee_range'],
+      phone: data.phone.replace(/\D/g, ''),
+      form_started_at: formStartedAt,
+    };
+  }
 
   const focusCaptcha = () => {
     requestAnimationFrame(() => captchaInputRef.current?.focus());
@@ -74,48 +58,23 @@ export function useLeadForm() {
 
   useEffect(() => {
     formStartedAt.current = Math.floor(Date.now() / 1000);
-    void refreshCaptcha();
-  }, [refreshCaptcha]);
+  }, []);
 
   const onSubmit = async (data: LeadFormData) => {
     setErrorMessage(null);
 
-    const payload: LeadPayload = {
-      ...data,
-      employee_range: data.employee_range as LeadPayload['employee_range'],
-      phone: data.phone.replace(/\D/g, ''),
-      form_started_at: formStartedAt.current,
-    };
+    const payload = buildLeadPayload(data, formStartedAt.current);
 
     try {
-      let token = validationToken.current;
+      const token = await captcha.validate();
       if (!token) {
-        if (!captchaKey || captchaCode.length !== 5) {
-          setCaptchaError('Informe o código de segurança.');
-          focusCaptcha();
-          return;
-        }
-
-        try {
-          token = await verifyCaptcha(captchaKey, captchaCode);
-          validationToken.current = token;
-          setCaptchaError(null);
-        } catch (error: unknown) {
-          const verificationError =
-            isAxiosError(error) && error.response?.status === 422
-              ? 'Código de segurança inválido ou expirado.'
-              : 'Não foi possível validar o captcha. Tente novamente.';
-          await refreshCaptcha();
-          setCaptchaError(verificationError);
-          focusCaptcha();
-          return;
-        }
+        focusCaptcha();
+        return;
       }
 
       await submitLeadCapture(payload, token);
       form.reset(DEFAULT_VALUES);
       setIsSuccess(true);
-      requestAnimationFrame(() => successTitleRef.current?.focus());
     } catch (error: unknown) {
       if (!isAxiosError(error)) {
         setErrorMessage('Ocorreu um erro ao enviar a solicitação. Tente novamente.');
@@ -129,7 +88,7 @@ export function useLeadForm() {
 
       if (error.response?.status === 403) {
         setErrorMessage('A validação expirou. Confirme o novo código de segurança.');
-        await refreshCaptcha();
+        await captcha.refresh();
         focusCaptcha();
         return;
       }
@@ -141,10 +100,9 @@ export function useLeadForm() {
         if (errors && typeof errors === 'object') {
           for (const [field, messages] of Object.entries(errors)) {
             const message = Array.isArray(messages) ? messages[0] : String(messages);
-            const normalizedField = field === 'number_employees' ? 'employee_range' : field;
 
-            if (FORM_FIELDS.has(normalizedField as keyof LeadFormData)) {
-              form.setError(normalizedField as keyof LeadFormData, {
+            if (FORM_FIELDS.has(field as keyof LeadFormData)) {
+              form.setError(field as keyof LeadFormData, {
                 type: 'server',
                 message,
               });
@@ -170,22 +128,23 @@ export function useLeadForm() {
     formStartedAt.current = Math.floor(Date.now() / 1000);
     setErrorMessage(null);
     setIsSuccess(false);
-    void refreshCaptcha();
+    void captcha.refresh();
   };
 
   return {
     ...form,
     errorMessage,
-    captchaCode,
-    captchaError,
-    captchaImage,
-    captchaInputRef,
-    isCaptchaLoading,
-    onCaptchaCodeChange: setCaptchaCode,
-    refreshCaptcha,
+    captcha: {
+      code: captcha.code,
+      error: captcha.error,
+      image: captcha.image,
+      inputRef: captchaInputRef,
+      isLoading: captcha.isLoading,
+      onCodeChange: captcha.onCodeChange,
+      refresh: captcha.refresh,
+    },
     isSuccess,
     onSubmit: form.handleSubmit(onSubmit),
     showForm,
-    successTitleRef,
   };
 }

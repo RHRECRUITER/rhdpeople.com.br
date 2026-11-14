@@ -62,6 +62,8 @@ const objectiveSchema = z
     message: 'Selecione pelo menos uma opção',
   });
 
+export type ObjectiveSelection = z.infer<typeof objectiveSchema>;
+
 export const leadSchema = z.object({
   name: z.string().trim().min(3, 'Informe seu nome completo'),
   company_name: z.string().trim().min(2, 'Informe o nome da empresa'),
@@ -87,7 +89,7 @@ export interface LeadPayload {
   corporate_email: string;
   phone: string;
   employee_range: EmployeeCountRange;
-  objective: Record<string, boolean>;
+  objective: ObjectiveSelection;
   form_started_at: number;
   website: string;
 }

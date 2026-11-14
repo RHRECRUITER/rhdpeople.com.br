@@ -1,6 +1,6 @@
 import { ArrowRight, Check } from 'lucide-react';
-import { useId } from 'react';
-import { Captcha } from '@/components/Captcha';
+import { useEffect, useId, useRef } from 'react';
+import { Controller } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
@@ -21,7 +21,8 @@ import {
 } from '../lib/lead.styles';
 import { formatPhone } from '../lib/lead.utils';
 import { SECTION_SURFACE } from '../lib/styles';
-import type { ChallengeOptionId, LeadSectionContent } from '../types/lead.types';
+import type { LeadSectionContent } from '../types/lead.types';
+import { Captcha } from './Captcha';
 
 type LeadFormProps = {
   content?: LeadSectionContent;
@@ -39,37 +40,34 @@ function ErrorMessage({ id, message }: { id: string; message?: string }) {
 
 export function LeadForm({ content = DEFAULT_LEAD }: LeadFormProps) {
   const errorId = useId();
+  const successTitleRef = useRef<HTMLHeadingElement>(null);
   const {
     errorMessage,
-    captchaCode,
-    captchaError,
-    captchaImage,
-    captchaInputRef,
+    captcha,
     formState: { errors, isSubmitting },
-    isCaptchaLoading,
     isSuccess,
     onSubmit,
-    onCaptchaCodeChange,
-    refreshCaptcha,
     register,
+    control,
     setValue,
     showForm,
-    successTitleRef,
     watch,
   } = useLeadForm();
   const employeeRange = watch('employee_range');
-  const objectives = watch('objective');
 
-  const toggleObjective = (id: ChallengeOptionId) => {
-    setValue(`objective.${id}`, !objectives[id], {
-      shouldDirty: true,
-      shouldValidate: true,
-    });
-  };
-
-  const fieldError = (field: 'name' | 'company_name' | 'corporate_email' | 'phone') => {
+  const getFieldErrorMessage = (field: 'name' | 'company_name' | 'corporate_email' | 'phone') => {
     return errors[field]?.message;
   };
+
+  useEffect(() => {
+    if (!isSuccess) return;
+
+    const frame = requestAnimationFrame(() => {
+      successTitleRef.current?.focus();
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [isSuccess]);
 
   return (
     <section className={cn(SECTION_SURFACE, 'relative min-h-256 flex')} id="demonstracao">
@@ -109,7 +107,7 @@ export function LeadForm({ content = DEFAULT_LEAD }: LeadFormProps) {
                 return (
                   <div className={SEAL_BADGE} key={badge.label}>
                     <Icon
-                      absoluteStrokeWidth
+                      nonScalingStroke
                       className="size-4 shrink-0 text-emerald-900 dark:text-neutral-50"
                       strokeWidth={strokeWidth}
                     />
@@ -176,15 +174,20 @@ export function LeadForm({ content = DEFAULT_LEAD }: LeadFormProps) {
                           {content.fields.name.label}
                         </Label>
                         <Input
-                          aria-describedby={fieldError('name') ? `${errorId}-name` : undefined}
-                          aria-invalid={Boolean(fieldError('name'))}
+                          aria-describedby={
+                            getFieldErrorMessage('name') ? `${errorId}-name` : undefined
+                          }
+                          aria-invalid={Boolean(getFieldErrorMessage('name'))}
                           autoComplete="name"
                           className={INPUT_STYLE}
                           id="lead-name"
                           placeholder={content.fields.name.placeholder}
                           {...register('name')}
                         />
-                        <ErrorMessage id={`${errorId}-name`} message={fieldError('name')} />
+                        <ErrorMessage
+                          id={`${errorId}-name`}
+                          message={getFieldErrorMessage('name')}
+                        />
                       </div>
                       <div className="flex flex-col gap-3.5">
                         <Label className={LABEL_STYLE} htmlFor="lead-company">
@@ -192,9 +195,9 @@ export function LeadForm({ content = DEFAULT_LEAD }: LeadFormProps) {
                         </Label>
                         <Input
                           aria-describedby={
-                            fieldError('company_name') ? `${errorId}-company` : undefined
+                            getFieldErrorMessage('company_name') ? `${errorId}-company` : undefined
                           }
-                          aria-invalid={Boolean(fieldError('company_name'))}
+                          aria-invalid={Boolean(getFieldErrorMessage('company_name'))}
                           autoComplete="organization"
                           className={INPUT_STYLE}
                           id="lead-company"
@@ -203,7 +206,7 @@ export function LeadForm({ content = DEFAULT_LEAD }: LeadFormProps) {
                         />
                         <ErrorMessage
                           id={`${errorId}-company`}
-                          message={fieldError('company_name')}
+                          message={getFieldErrorMessage('company_name')}
                         />
                       </div>
                       <div className="flex flex-col gap-3.5">
@@ -212,9 +215,9 @@ export function LeadForm({ content = DEFAULT_LEAD }: LeadFormProps) {
                         </Label>
                         <Input
                           aria-describedby={
-                            fieldError('corporate_email') ? `${errorId}-email` : undefined
+                            getFieldErrorMessage('corporate_email') ? `${errorId}-email` : undefined
                           }
-                          aria-invalid={Boolean(fieldError('corporate_email'))}
+                          aria-invalid={Boolean(getFieldErrorMessage('corporate_email'))}
                           autoComplete="email"
                           className={INPUT_STYLE}
                           id="lead-email"
@@ -224,7 +227,7 @@ export function LeadForm({ content = DEFAULT_LEAD }: LeadFormProps) {
                         />
                         <ErrorMessage
                           id={`${errorId}-email`}
-                          message={fieldError('corporate_email')}
+                          message={getFieldErrorMessage('corporate_email')}
                         />
                       </div>
                       <div className="flex flex-col gap-3.5">
@@ -232,8 +235,10 @@ export function LeadForm({ content = DEFAULT_LEAD }: LeadFormProps) {
                           {content.fields.phone.label}
                         </Label>
                         <Input
-                          aria-describedby={fieldError('phone') ? `${errorId}-phone` : undefined}
-                          aria-invalid={Boolean(fieldError('phone'))}
+                          aria-describedby={
+                            getFieldErrorMessage('phone') ? `${errorId}-phone` : undefined
+                          }
+                          aria-invalid={Boolean(getFieldErrorMessage('phone'))}
                           autoComplete="tel"
                           className={INPUT_STYLE}
                           id="lead-phone"
@@ -248,7 +253,10 @@ export function LeadForm({ content = DEFAULT_LEAD }: LeadFormProps) {
                             },
                           })}
                         />
-                        <ErrorMessage id={`${errorId}-phone`} message={fieldError('phone')} />
+                        <ErrorMessage
+                          id={`${errorId}-phone`}
+                          message={getFieldErrorMessage('phone')}
+                        />
                       </div>
                     </div>
 
@@ -285,41 +293,57 @@ export function LeadForm({ content = DEFAULT_LEAD }: LeadFormProps) {
 
                 <div className="h-[1.5px] w-full rounded-full bg-neutral-200 lg:max-w-73 dark:bg-neutral-900/45" />
 
-                <fieldset className="m-0 flex min-w-0 flex-col gap-2 border-0 p-0">
+                <fieldset
+                  aria-describedby={errors.objective ? `${errorId}-objective` : undefined}
+                  aria-invalid={Boolean(errors.objective)}
+                  className="m-0 flex min-w-0 flex-col gap-2 border-0 p-0"
+                >
                   <legend className={cn(SECTION_HEADING, 'mb-6.5 text-neutral-800')}>
                     {content.challengeHeader}
                   </legend>
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-x-8.25">
-                    {content.challenges.map((challenge) => {
-                      const selected = objectives[challenge.id];
-                      return (
-                        <button
-                          aria-pressed={selected}
-                          className={selected ? CHALLENGE_BUTTON.active : CHALLENGE_BUTTON.idle}
-                          key={challenge.id}
-                          onClick={() => toggleObjective(challenge.id)}
-                          type="button"
-                        >
-                          <span className="truncate pr-2">{challenge.label}</span>
-                          <span
-                            aria-hidden="true"
-                            className={
-                              selected
-                                ? 'flex size-6 shrink-0 items-center justify-center rounded-full bg-emerald-600'
-                                : 'size-6 shrink-0 rounded-full border-[1.5px] border-neutral-400'
-                            }
-                          >
-                            {selected && <span className="size-2.5 rounded-full bg-emerald-50" />}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <input
-                    aria-describedby={errors.objective ? `${errorId}-objective` : undefined}
-                    className="sr-only"
-                    type="checkbox"
-                    {...register('objective.vacation')}
+                  <Controller
+                    control={control}
+                    name="objective"
+                    render={({ field }) => (
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-x-8.25">
+                        {content.challenges.map((challenge, index) => {
+                          const selected = field.value[challenge.id];
+                          return (
+                            <button
+                              aria-pressed={selected}
+                              className={selected ? CHALLENGE_BUTTON.active : CHALLENGE_BUTTON.idle}
+                              aria-describedby={
+                                errors.objective ? `${errorId}-objective` : undefined
+                              }
+                              key={challenge.id}
+                              onBlur={field.onBlur}
+                              onClick={() =>
+                                field.onChange({
+                                  ...field.value,
+                                  [challenge.id]: !selected,
+                                })
+                              }
+                              ref={index === 0 ? field.ref : undefined}
+                              type="button"
+                            >
+                              <span className="truncate pr-2">{challenge.label}</span>
+                              <span
+                                aria-hidden="true"
+                                className={
+                                  selected
+                                    ? 'flex size-6 shrink-0 items-center justify-center rounded-full bg-emerald-600'
+                                    : 'size-6 shrink-0 rounded-full border-[1.5px] border-neutral-400'
+                                }
+                              >
+                                {selected && (
+                                  <span className="size-2.5 rounded-full bg-emerald-50" />
+                                )}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
                   />
                   <ErrorMessage id={`${errorId}-objective`} message={errors.objective?.message} />
                 </fieldset>
@@ -335,13 +359,13 @@ export function LeadForm({ content = DEFAULT_LEAD }: LeadFormProps) {
                 )}
 
                 <Captcha
-                  disabled={isSubmitting || isCaptchaLoading}
-                  error={captchaError}
-                  image={captchaImage}
-                  inputRef={captchaInputRef}
-                  onChange={onCaptchaCodeChange}
-                  onRefresh={() => void refreshCaptcha()}
-                  value={captchaCode}
+                  disabled={isSubmitting || captcha.isLoading}
+                  error={captcha.error}
+                  image={captcha.image}
+                  inputRef={captcha.inputRef}
+                  onChange={captcha.onCodeChange}
+                  onRefresh={() => void captcha.refresh()}
+                  value={captcha.code}
                 />
 
                 <div className="flex flex-col items-center gap-4">
